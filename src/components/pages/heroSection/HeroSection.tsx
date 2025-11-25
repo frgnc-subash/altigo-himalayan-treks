@@ -2,16 +2,16 @@ import Footer from "@/components/layouts/footer/Footer";
 import Navbar from "../../layouts/navbar/Navbar";
 import Searchbar from "../../layouts/searchbar/Searchbar";
 
-const Home = () => {
+const HeroSection = () => {
   return (
     <>
       <Navbar />
-      <div className="h-20"></div>
+      <div className="my-40"></div>
       <Searchbar />
-      <div className="h-100"></div>
+      <div className="my-60"></div>
       <Footer />
     </>
   );
 };
 
-export default Home;
+export default HeroSection;

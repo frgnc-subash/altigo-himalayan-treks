@@ -1,13 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar: React.FC = () => {
+  // Updated navItems to match your App.js routes
   const navItems = [
-    { label: "Explore" },
-    { label: "Tour & Activities" },
-    { label: "Plan My Trip" },
-    { label: "Packages" },
-    { label: "Contact" },
+    { label: "Explore", path: "/" },
+    { label: "Tour & Activities", path: "/tour&activities" },
+    { label: "Plan a Trip", path: "/plan-trips" },
+    { label: "Packages", path: "/packages" },
+    { label: "Contact", path: "/contact" },
   ];
 
   return (
@@ -23,21 +25,31 @@ const Navbar: React.FC = () => {
     >
       <nav className="flex items-center m-4 px-6 py-3 bg-white border border-gray-200 shadow-md rounded-xl">
         <div className="flex items-center flex-1">
-          <img
-            src="/assets/logo.png"
-            alt="Mount Treks Logo"
-            className="h-14 w-auto cursor-pointer"
-          />
+          <Link to="/">
+            <img
+              src="/assets/logo.png"
+              alt="Mount Treks Logo"
+              className="h-14 w-auto cursor-pointer"
+            />
+          </Link>
         </div>
 
         <div className="flex gap-1 items-center justify-center">
           {navItems.map((item, index) => (
-            <span
+            <NavLink
               key={index}
-              className="cursor-pointer text-zinc-800 hover:text-black hover:bg-zinc-100 transition-colors duration-200 font-bold text-sm tracking-wide px-5 py-2.5 rounded-lg flex items-center"
+              to={item.path}
+              className={({ isActive }) =>
+                `cursor-pointer transition-colors duration-200 font-bold text-sm tracking-wide px-5 py-2.5 rounded-lg flex items-center
+                ${
+                  isActive
+                    ? "text-black bg-zinc-100" // Active state style
+                    : "text-zinc-600 hover:text-black hover:bg-zinc-50" // Inactive state style
+                }`
+              }
             >
               {item.label}
-            </span>
+            </NavLink>
           ))}
         </div>
 
