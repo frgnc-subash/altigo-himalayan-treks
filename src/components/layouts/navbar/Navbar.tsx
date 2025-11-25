@@ -1,30 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { FaGlobe, FaChevronDown, FaBell } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("English");
-
-  const toggleLangDropdown = () => setIsLangOpen(!isLangOpen);
-  const handleLanguageSelect = (lang: string) => {
-    setSelectedLang(lang);
-    setIsLangOpen(false);
-  };
-
-  const languages = ["English", "Español", "हिन्दी", "日本語", "中文"];
-
   const navItems = [
-    { label: "Destination" },
-    { label: "Check In" },
-    { label: "Check Out" },
+    { label: "Explore" },
+    { label: "Tour & Activities" },
+    { label: "Plan My Trip" },
     { label: "Packages" },
     { label: "Contact" },
   ];
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
+      initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
         type: "spring",
@@ -33,8 +21,8 @@ const Navbar: React.FC = () => {
         duration: 0.8,
       }}
     >
-      <nav className="flex justify-between items-center gap-6 m-4 px-6 py-3 bg-[#172349]">
-        <div className="flex items-center">
+      <nav className="flex items-center m-4 px-6 py-3 bg-white border border-gray-200 shadow-md rounded-xl">
+        <div className="flex items-center flex-1">
           <img
             src="/assets/logo.png"
             alt="Mount Treks Logo"
@@ -42,66 +30,24 @@ const Navbar: React.FC = () => {
           />
         </div>
 
-        <div className="flex gap-2 text-white h-full items-center -my-3">
+        <div className="flex gap-1 items-center justify-center">
           {navItems.map((item, index) => (
             <span
               key={index}
-              className="cursor-pointer hover:text-blue-400 hover:bg-white/10 transition font-medium text-m px-4 py-6 h-full flex items-center"
+              className="cursor-pointer text-zinc-800 hover:text-black hover:bg-zinc-100 transition-colors duration-200 font-bold text-sm tracking-wide px-5 py-2.5 rounded-lg flex items-center"
             >
               {item.label}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
-          <button className="flex items-center justify-center w-7 h-7 rounded-full bg-gray-300 text-black hover:bg-gray-400 transition">
-            <FaBell size={12} />
+        <div className="flex items-center justify-end gap-5 flex-1">
+          <button className="text-xs font-extrabold text-zinc-950 hover:text-zinc-600 transition-colors px-2 uppercase tracking-wide">
+            Log in
           </button>
 
-          <div className="relative w-28 shrink-0">
-            <button
-              onClick={toggleLangDropdown}
-              aria-haspopup="listbox"
-              aria-expanded={isLangOpen}
-              className="flex w-full items-center justify-between gap-2 rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-black shadow-sm transition hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            >
-              <span className="flex items-center gap-2">
-                <FaGlobe className="text-black text-xs" />
-                {selectedLang}
-              </span>
-              <FaChevronDown
-                className={`text-[10px] transition-transform ${
-                  isLangOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {isLangOpen && (
-              <ul
-                role="listbox"
-                className="absolute left-0 right-0 mt-2 overflow-hidden rounded-lg border border-gray-300 bg-white text-sm shadow-lg z-20"
-              >
-                {languages.map((lang) => (
-                  <li
-                    key={lang}
-                    role="option"
-                    aria-selected={selectedLang === lang}
-                    onClick={() => handleLanguageSelect(lang)}
-                    className={`cursor-pointer px-3 py-2 transition hover:bg-gray-100 ${
-                      selectedLang === lang
-                        ? "bg-gray-100 font-semibold text-black"
-                        : "text-black"
-                    }`}
-                  >
-                    {lang}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <button className="rounded-full bg-[#080808] text-[#172349] px-4 py-1.5 text-xs font-semibold shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300">
-            Sign in
+          <button className="rounded-full bg-black text-white px-6 py-2.5 text-xs font-bold shadow-lg shadow-zinc-200 hover:bg-zinc-800 hover:shadow-xl transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-zinc-400">
+            Sign up
           </button>
         </div>
       </nav>

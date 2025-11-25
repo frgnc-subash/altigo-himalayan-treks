@@ -1,3 +1,4 @@
+import Footer from "@/components/layouts/footer/Footer";
 import Navbar from "../../layouts/navbar/Navbar";
 import Searchbar from "../../layouts/searchbar/Searchbar";
 
@@ -5,10 +6,10 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center m-4">
-        <h1>Where you off to?</h1>
-      </div>
+      <div className="h-20"></div>
       <Searchbar />
+      <div className="h-100"></div>
+      <Footer />
     </>
   );
 };

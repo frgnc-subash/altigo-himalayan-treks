@@ -1,11 +1,9 @@
-import Home from "./components/pages/heroSection/Home";
+import Home from "./components/pages/heroSection/HeroSection";
 
 const App = () => {
   return (
     <>
-      <div>
-        <Home />
-      </div>
+      <Home />
     </>
   );
 };
