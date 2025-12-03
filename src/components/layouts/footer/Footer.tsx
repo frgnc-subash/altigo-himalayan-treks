@@ -113,7 +113,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+  
         <div className="border-t border-zinc-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-zinc-600">
             © {new Date().getFullYear()} Mount Treks. All rights reserved.

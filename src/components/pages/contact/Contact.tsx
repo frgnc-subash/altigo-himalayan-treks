@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <>
       <Navbar />
-      <h1 className="m-40 flex justify-center align-middle">This is a Contact</h1>
+      <h1 className=" text-white m-40 flex justify-center align-middle">This is a Contact</h1>
       <Footer/>
     </>
   );

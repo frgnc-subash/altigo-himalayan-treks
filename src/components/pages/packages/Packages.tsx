@@ -5,7 +5,7 @@ const Packages = () => {
   return (
     <>
       <Navbar />
-      <div className=" bg-amber-400 my-40 flex justify-center align-middle">
+      <div className=" text-white my-40 flex justify-center align-middle">
         <h1>This is a Package.</h1>
       </div>
       <Footer />
