@@ -1,26 +1,57 @@
+import { useState, useEffect } from "react";
 import { FaMountain, FaRegMap, FaStar, FaArrowDown } from "react-icons/fa";
 import Navbar from "../../layouts/navbar/Navbar";
 import Searchbar from "../../layouts/searchbar/Searchbar";
 import Footer from "@/components/layouts/footer/Footer";
 
 const HeroSection = () => {
+  const backgroundImages = [
+    "/assets/bg1.jpg",
+    "/assets/bg2.jpg",
+    "/assets/bg3.jpg",
+    "/assets/bg4.jpg",
+    "/assets/bg5.jpg",
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
+
   return (
     <div className="flex flex-col w-full">
       <Navbar />
       <div className="relative w-full h-screen min-h-[700px] flex flex-col font-sans">
+        {/* --- BACKGROUND CAROUSEL START --- */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-black">
-          <img
-            src="/assets/heropage.jpg"
-            alt="Himalayas Nepal Background"
-            className="w-full h-full object-cover select-none brightness-[0.6]"
-          />
-
-          <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/50 to-[#050505]" />
+          {backgroundImages.map((img, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={img}
+                alt={`Slide ${index}`}
+                className="w-full h-full object-cover select-none brightness-[0.7]"
+              />
+            </div>
+          ))}
+          <div className="absolute inset-0 bg-linear-to-b from-black/5 via-black/70 to-[#050505] z-10" />
         </div>
+        {/* --- BACKGROUND CAROUSEL END --- */}
 
         <div className="relative z-20 grow flex flex-col items-center justify-center px-4 pt-24 text-center">
           <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-8 animate-fade-in-up">
-            <span className="w-2 h-2 rounded-full bg-[#084EA8] animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
             <span className="text-white text-xs font-bold tracking-widest uppercase">
               Visit Nepal 2025
             </span>
@@ -29,7 +60,7 @@ const HeroSection = () => {
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
             CONQUER <br />
             <span className="text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-400">
-              THE PEAKS
+              THE HIMALAYAS
             </span>
           </h1>
 
