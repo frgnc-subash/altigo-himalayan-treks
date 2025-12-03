@@ -118,6 +118,7 @@
     @apply bg-background text-foreground;
   }
 }
+
 * {
   font-family: "Lato", sans-serif;
 }

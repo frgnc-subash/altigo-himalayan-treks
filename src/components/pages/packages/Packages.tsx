@@ -5,9 +5,9 @@ const Packages = () => {
   return (
     <>
       <Navbar />
-      <h1 className="m-40 flex justify-center align-middle">
-        This is a Package
-      </h1>
+      <div className=" bg-amber-400 my-40 flex justify-center align-middle">
+        <h1>This is a Package.</h1>
+      </div>
       <Footer />
     </>
   );
