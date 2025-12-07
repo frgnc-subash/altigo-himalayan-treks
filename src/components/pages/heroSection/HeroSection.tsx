@@ -6,11 +6,17 @@ import Footer from "@/components/layouts/footer/Footer";
 
 const HeroSection = () => {
   const backgroundImages = [
-    "/assets/bg1.jpg",
-    "/assets/bg2.jpg",
-    "/assets/bg3.jpg",
-    "/assets/bg4.jpg",
-    "/assets/bg5.jpg",
+    "/assets/bg1.webp",
+    "/assets/bg2.webp",
+    "/assets/bg3.webp",
+    "/assets/bg4.webp",
+    "/assets/bg5.webp",
+    "/assets/bg6.webp",
+    "/assets/bg7.webp",
+    "/assets/bg8.webp",
+    "/assets/bg9.jpg",
+    "/assets/bg10.jpg",
+    "/assets/bg11.jpg",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,7 +26,7 @@ const HeroSection = () => {
       setCurrentIndex((prevIndex) =>
         prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 7000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
@@ -53,7 +59,7 @@ const HeroSection = () => {
           <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-8 animate-fade-in-up">
             <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
             <span className="text-white text-xs font-bold tracking-widest uppercase">
-              Visit Nepal 2025
+              Visit Nepal 2026
             </span>
           </div>
 

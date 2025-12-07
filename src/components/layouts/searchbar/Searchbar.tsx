@@ -19,7 +19,7 @@ const HighlightText = ({
   text: string;
   highlight: string;
 }) => {
-  if (!highlight.trim()) return <span>{text}</span>;
+  if (!highlight.trim()) return <span className="text-gray-700">{text}</span>;
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
   return (
     <span>
@@ -27,12 +27,12 @@ const HighlightText = ({
         part.toLowerCase() === highlight.toLowerCase() ? (
           <strong
             key={i}
-            className="text-black font-extrabold underline decoration-2 decoration-gray-400/50 underline-offset-2"
+            className="text-black font-extrabold decoration-gray-400 underline underline-offset-2"
           >
             {part}
           </strong>
         ) : (
-          <span key={i} className="text-gray-700">
+          <span key={i} className="text-gray-600">
             {part}
           </span>
         )
@@ -65,33 +65,39 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
     "Mount Everest",
     "Langtang Region",
     "Mustang Expedition",
+    "Chitwan National Park",
+    "Lumbini",
   ];
 
+  // Load recent searches and enforce limit immediately
   useEffect(() => {
     const stored = localStorage.getItem("recentSearches");
-    if (stored) setRecent(JSON.parse(stored));
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Ensure we never load more than 5, even if bad data exists
+      setRecent(Array.isArray(parsed) ? parsed.slice(0, 5) : []);
+    }
   }, []);
 
   useEffect(() => {
     setSelectedIndex(-1);
   }, [query, isOpen]);
 
+  // Lock body scroll and focus input
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 50);
+      setTimeout(() => inputRef.current?.focus(), 50);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
   const addToRecent = (item: string) => {
+    // Filter out duplicates then take top 4 + new item = 5 max
     const updated = [item, ...recent.filter((r) => r !== item)].slice(0, 5);
     setRecent(updated);
     localStorage.setItem("recentSearches", JSON.stringify(updated));
@@ -120,6 +126,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
 
+    // Determine what list is currently visible
     let activeList: string[] = [];
     if (!query) activeList = [...recent, ...featuredPlaces];
     else activeList = results;
@@ -154,53 +161,40 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
 
   return (
     <>
-      {/* 
-        TRIGGER BUTTON (Hero Section)
-        Updates: 
-        - bg-white/60: Semi-transparent
-        - backdrop-blur-md: Frosted glass
-        - border-white/40: Light edge highlight
-      */}
+      {/* TRIGGER BUTTON */}
       <div
         className={`relative z-10 w-full ${
           containerClassName ?? "max-w-2xl"
         } mx-auto font-sans`}
       >
         <div
-          className="w-full bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 hover:border-white/60 hover:shadow-2xl hover:shadow-black/10
-            transition-all duration-300 rounded-full px-5 py-3.5 flex items-center cursor-pointer group"
+          className="w-full bg-white/70 backdrop-blur-md border border-white/50 hover:bg-white hover:shadow-lg
+            transition-all duration-300 rounded-full px-5 py-3 flex items-center cursor-pointer group shadow-sm"
           onClick={() => setIsOpen(true)}
         >
-          <FaSearch className="text-gray-600 group-hover:text-black mr-3 transition-colors duration-300" />
-          <span className="text-gray-700 group-hover:text-black transition-colors duration-300 select-none flex-1 font-medium">
+          <FaSearch className="text-gray-500 group-hover:text-black mr-3 transition-colors" />
+          <span className="text-gray-600 group-hover:text-black transition-colors flex-1 font-medium text-sm sm:text-base">
             Find your destination...
           </span>
-          <div className="bg-white/50 rounded px-2 py-1 text-xs text-gray-600 font-bold border border-white/30 group-hover:border-gray-400 group-hover:text-gray-800 transition-all">
+          <div className="hidden sm:block bg-gray-100/50 rounded px-2 py-0.5 text-[10px] text-gray-500 font-bold border border-gray-200 group-hover:border-gray-400 group-hover:text-gray-700">
             CMD+K
           </div>
         </div>
       </div>
 
-      {/* 
-        MODAL (Popup)
-        Updates:
-        - bg-white/90: Slightly less transparent so text is readable
-        - backdrop-blur-xl: Heavy blur for focus
-      */}
+      {/* MODAL OVERLAY */}
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          
-          {/* Darker backdrop for focus */}
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+        <div className="fixed inset-0 z-100 flex items-start sm:items-center justify-center p-4 sm:p-6">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
             onClick={() => setIsOpen(false)}
           />
 
-          <div className="relative w-full max-w-2xl bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/20 ring-1 ring-black/5 animate-fade-in-up">
-            
-            {/* Header */}
-            <div className="relative border-b border-gray-200/60 bg-white/40">
-              <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-800 text-lg" />
+          {/* MODAL CONTAINER */}
+          <div className="relative w-full max-w-2xl bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl ring-1 ring-black/5 flex flex-col max-h-[85vh] sm:max-h-[70vh] animate-fade-in-up overflow-hidden">
+            {/* HEADER (Fixed) */}
+            <div className="flex-none relative border-b border-gray-200/80 bg-white/50">
+              <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
               <input
                 ref={inputRef}
                 type="text"
@@ -208,7 +202,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
                 onChange={(e) => handleSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Search treks, peaks, or guides..."
-                className="w-full pl-14 pr-10 py-5 text-lg text-black placeholder-gray-500 focus:outline-none bg-transparent font-medium"
+                className="w-full pl-14 pr-12 py-4 text-lg text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent font-medium"
               />
               <button
                 onClick={() => {
@@ -220,27 +214,28 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
                     setIsOpen(false);
                   }
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black p-2 transition-colors rounded-full hover:bg-black/5"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all"
               >
                 <FaTimes />
               </button>
             </div>
 
-            {/* Content Area */}
-            <div className="max-h-[60vh] overflow-y-auto py-2 custom-scrollbar bg-white/10">
+            {/* CONTENT BODY (Scrollable) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar py-2">
+              {/* STATE: DEFAULT (Recent + Featured) */}
               {!query && (
                 <>
                   {recent.length > 0 && (
                     <div className="mb-2">
                       <div className="flex justify-between items-center px-5 py-2">
-                        <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                          Recent Trails
+                        <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                          Recent
                         </h4>
                         <button
                           onClick={clearAllRecent}
-                          className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors uppercase tracking-wide"
+                          className="text-[10px] font-bold text-gray-400 hover:text-red-500 transition-colors uppercase"
                         >
-                          Clear All
+                          Clear
                         </button>
                       </div>
 
@@ -248,28 +243,28 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
                         <div
                           key={item}
                           onClick={() => handleSelect(item)}
-                          className={`px-5 py-3 flex items-center justify-between cursor-pointer group transition-all duration-200
+                          className={`group px-5 py-2.5 flex items-center justify-between cursor-pointer transition-colors
                               ${
                                 selectedIndex === index
-                                  ? "bg-black/5 border-l-4 border-black pl-4"
-                                  : "hover:bg-black/5 border-l-4 border-transparent"
+                                  ? "bg-gray-100"
+                                  : "hover:bg-gray-50"
                               }`}
                         >
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-3 overflow-hidden">
                             <FaHistory
-                              className={`text-sm ${
+                              className={`shrink-0 text-sm ${
                                 selectedIndex === index
-                                  ? "text-black"
+                                  ? "text-gray-800"
                                   : "text-gray-400"
                               }`}
                             />
-                            <span className="text-gray-800 text-sm font-medium group-hover:text-black">
+                            <span className="text-gray-700 text-sm font-medium truncate group-hover:text-black">
                               {item}
                             </span>
                           </div>
                           <button
                             onClick={(e) => removeRecent(e, item)}
-                            className="text-gray-400 hover:text-black opacity-0 group-hover:opacity-100 transition-all p-1"
+                            className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all p-1"
                           >
                             <FaTimes size={12} />
                           </button>
@@ -278,9 +273,9 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
                     </div>
                   )}
 
-                  <div>
-                    <h4 className="px-5 py-2 text-xs font-bold text-gray-500 uppercase tracking-widest mt-2">
-                      Featured Peaks
+                  <div className="mt-2">
+                    <h4 className="px-5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                      Suggested
                     </h4>
                     {featuredPlaces.map((place, index) => {
                       const actualIndex = recent.length + index;
@@ -288,24 +283,24 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
                         <div
                           key={place}
                           onClick={() => handleSelect(place)}
-                          className={`px-5 py-3 flex items-center cursor-pointer transition-all duration-200
+                          className={`px-5 py-3 flex items-center cursor-pointer transition-colors
                               ${
                                 selectedIndex === actualIndex
-                                  ? "bg-black/5 border-l-4 border-black pl-4"
-                                  : "hover:bg-black/5 border-l-4 border-transparent"
+                                  ? "bg-gray-100"
+                                  : "hover:bg-gray-50"
                               }`}
                         >
                           <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 transition-colors
+                            className={`w-7 h-7 rounded-full flex items-center justify-center mr-3 transition-colors shrink-0
                               ${
                                 selectedIndex === actualIndex
-                                  ? "bg-black text-white"
-                                  : "bg-white/70 text-gray-600 shadow-sm"
+                                  ? "bg-gray-800 text-white"
+                                  : "bg-gray-100 text-gray-500"
                               }`}
                           >
-                            <FaMountain size={12} />
+                            <FaMountain size={10} />
                           </div>
-                          <span className="text-gray-800 text-sm font-semibold">
+                          <span className="text-gray-700 text-sm font-semibold">
                             {place}
                           </span>
                         </div>
@@ -315,80 +310,82 @@ const Searchbar: React.FC<SearchbarProps> = ({ containerClassName }) => {
                 </>
               )}
 
-              {/* Search Results */}
+              {/* STATE: RESULTS */}
               {query && results.length > 0 && (
-                <ul>
-                  {results.map((item, index) => (
-                    <li
-                      key={index}
-                      onClick={() => handleSelect(item)}
-                      className={`px-5 py-3.5 flex items-center cursor-pointer border-l-4 transition-all duration-150
-                          ${
-                            selectedIndex === index
-                              ? "bg-black/5 border-black pl-4"
-                              : "border-transparent hover:bg-black/5"
-                          }`}
-                    >
-                      <div
-                        className={`mr-4 ${
-                          selectedIndex === index
-                            ? "text-black"
-                            : "text-gray-400"
-                        }`}
+                <div className="py-1">
+                  <h4 className="px-5 py-2 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Results
+                  </h4>
+                  <ul>
+                    {results.map((item, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSelect(item)}
+                        className={`px-5 py-3 flex items-center cursor-pointer transition-colors
+                            ${
+                              selectedIndex === index
+                                ? "bg-gray-100"
+                                : "hover:bg-gray-50"
+                            }`}
                       >
-                        {featuredPlaces.includes(item) ? (
-                          <FaMapMarkerAlt />
-                        ) : (
-                          <FaArrowRight size={12} />
-                        )}
-                      </div>
-                      <div className="text-sm">
-                        <HighlightText text={item} highlight={query} />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                        <div
+                          className={`mr-3.5 ${
+                            selectedIndex === index
+                              ? "text-gray-800"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {featuredPlaces.includes(item) ? (
+                            <FaMapMarkerAlt size={14} />
+                          ) : (
+                            <FaArrowRight size={12} />
+                          )}
+                        </div>
+                        <div className="text-sm text-gray-700">
+                          <HighlightText text={item} highlight={query} />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
 
-              {/* No Results */}
+              {/* STATE: NO RESULTS */}
               {query && results.length === 0 && (
-                <div className="px-4 py-12 text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/50 mb-4">
-                    <FaSearch className="text-gray-400 text-xl" />
+                <div className="px-4 py-10 text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+                    <FaSearch className="text-gray-400" />
                   </div>
-                  <p className="text-gray-900 font-medium">
+                  <p className="text-gray-900 font-medium text-sm">
                     No results found
                   </p>
-                  <p className="text-gray-500 text-sm mt-1">
-                    We couldn't find "{query}" on our map.
+                  <p className="text-gray-500 text-xs mt-1">
+                    No match for "{query}".
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Footer */}
-            <div className="bg-white/40 px-5 py-3 border-t border-gray-200/50 flex justify-between items-center text-[10px] md:text-xs text-gray-500 uppercase tracking-wide">
-              <span className="font-semibold">Mount Treks Search</span>
-              <div className="flex items-center gap-3 sm:flex">
-                <span className="flex items-center gap-1">
-                  <kbd className="font-sans bg-white/60 border border-gray-300/50 rounded px-1.5 py-0.5 shadow-sm text-gray-700 font-bold">
-                    ↑
-                  </kbd>
-                  <kbd className="font-sans bg-white/60 border border-gray-300/50 rounded px-1.5 py-0.5 shadow-sm text-gray-700 font-bold">
-                    ↓
-                  </kbd>
+            {/* FOOTER (Fixed) */}
+            <div className="flex-none bg-gray-50 px-5 py-2.5 border-t border-gray-200 flex justify-between items-center text-[10px] text-gray-500 uppercase tracking-wide">
+              <span className="font-bold text-gray-400">Search</span>
+              <div className="items-center gap-3 hidden sm:flex">
+                <span className="flex items-center gap-1.5">
+                  <span className="bg-white border border-gray-200 rounded px-1.5 py-0.5 shadow-sm font-bold">
+                    ↑↓
+                  </span>
                   <span>navigate</span>
                 </span>
-                <span className="flex items-center gap-1">
-                  <kbd className="font-sans bg-white/60 border border-gray-300/50 rounded px-1.5 py-0.5 shadow-sm text-gray-700 font-bold">
+                <span className="flex items-center gap-1.5">
+                  <span className="bg-white border border-gray-200 rounded px-1.5 py-0.5 shadow-sm font-bold">
                     ↵
-                  </kbd>
+                  </span>
                   <span>select</span>
                 </span>
-                <span className="flex items-center gap-1">
-                  <kbd className="font-sans bg-white/60 border border-gray-300/50 rounded px-1.5 py-0.5 shadow-sm text-gray-700 font-bold">
+                <span className="flex items-center gap-1.5">
+                  <span className="bg-white border border-gray-200 rounded px-1.5 py-0.5 shadow-sm font-bold">
                     esc
-                  </kbd>
+                  </span>
                   <span>close</span>
                 </span>
               </div>
