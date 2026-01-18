@@ -7,6 +7,11 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
+import heroBg from "../../assets/backgrounds/bg9.jpg";
+import pkg1 from "../../assets/backgrounds/bg2.webp";
+import pkg2 from "../../assets/backgrounds/bg3.webp";
+import pkg3 from "../../assets/backgrounds/bg4.webp";
+
 const PACKAGES = [
   {
     id: 1,
@@ -14,8 +19,7 @@ const PACKAGES = [
     location: "Solukhumbu, Nepal",
     description:
       "Experience the legendary trail that has captivated adventurers for decades. Walk through Sherpa villages, ancient monasteries, and stand beneath the world's highest peak.",
-    image:
-      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
+    image: pkg1,
     price: 1450,
     days: 14,
     difficulty: "Hard",
@@ -25,51 +29,33 @@ const PACKAGES = [
     featured: true,
   },
   {
-    id: 1,
-    title: "Everest Base Camp | The Gateway to the Top of the World",
-    location: "Solukhumbu, Nepal",
+    id: 2,
+    title: "Annapurna Circuit | A Journey Through the Himalayas",
+    location: "Manang/Mustang, Nepal",
     description:
-      "Experience the legendary trail that has captivated adventurers for decades. Walk through Sherpa villages, ancient monasteries, and stand beneath the world's highest peak.",
-    image:
-      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
-    price: 1450,
-    days: 14,
-    difficulty: "Hard",
-    rating: 4.9,
-    reviews: 124,
+      "Traverse diverse landscapes from subtropical jungles to high-altitude deserts. Cross the Thorong La Pass and witness the majestic Annapurna range up close.",
+    image: pkg2,
+    price: 1200,
+    days: 18,
+    difficulty: "Medium",
+    rating: 4.8,
+    reviews: 98,
     category: "Trekking",
-    featured: true,
+    featured: false,
   },
   {
-    id: 1,
-    title: "Everest Base Camp | The Gateway to the Top of the World",
-    location: "Solukhumbu, Nepal",
+    id: 3,
+    title: "Upper Mustang | The Forbidden Kingdom Expedition",
+    location: "Mustang, Nepal",
     description:
-      "Experience the legendary trail that has captivated adventurers for decades. Walk through Sherpa villages, ancient monasteries, and stand beneath the world's highest peak.",
-    image:
-      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
-    price: 1450,
-    days: 14,
+      "Explore the hidden ancient kingdom of Lo Manthang. Witness unique Tibetan culture, red cliffs, and caves in one of the most preserved regions of the Himalayas.",
+    image: pkg3,
+    price: 1850,
+    days: 16,
     difficulty: "Hard",
     rating: 4.9,
-    reviews: 124,
-    category: "Trekking",
-    featured: true,
-  },
-  {
-    id: 1,
-    title: "Everest Base Camp | The Gateway to the Top of the World",
-    location: "Solukhumbu, Nepal",
-    description:
-      "Experience the legendary trail that has captivated adventurers for decades. Walk through Sherpa villages, ancient monasteries, and stand beneath the world's highest peak.",
-    image:
-      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
-    price: 1450,
-    days: 14,
-    difficulty: "Hard",
-    rating: 4.9,
-    reviews: 124,
-    category: "Trekking",
+    reviews: 45,
+    category: "Expedition",
     featured: true,
   },
 ];
@@ -77,11 +63,10 @@ const PACKAGES = [
 const Packages = () => {
   return (
     <div className="bg-[#050505] min-h-screen font-sans selection:bg-[#084EA8] selection:text-white">
-      {/* --- HERO SECTION --- */}
       <div className="relative h-[40vh] md:h-[45vh] flex flex-col items-center justify-center pt-20 overflow-hidden">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <img
-            src="/src/assets/backgrounds/bg9.jpg"
+            src={heroBg}
             alt="Himalayan Background"
             className="w-full h-full object-cover opacity-60 scale-105"
           />
@@ -108,7 +93,6 @@ const Packages = () => {
         </div>
       </div>
 
-      {/* --- PACKAGES LIST --- */}
       <div className="max-w-6xl mx-auto px-4 md:px-6 pb-20 -mt-2 relative z-20">
         <div className="flex flex-col gap-8 md:gap-12">
           {PACKAGES.map((pkg) => (
@@ -120,7 +104,6 @@ const Packages = () => {
                   : "border-white/5 hover:border-white/10"
               }`}
             >
-              {/* IMAGE SECTION */}
               <div className="relative w-full lg:w-[45%] h-64 sm:h-80 lg:h-auto overflow-hidden">
                 <img
                   src={pkg.image}
@@ -143,7 +126,6 @@ const Packages = () => {
                 </div>
               </div>
 
-              {/* CONTENT SECTION */}
               <div className="w-full lg:w-[55%] p-6 md:p-8 flex flex-col justify-center">
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-gray-400 mb-4 font-medium border-b border-white/5 pb-4">
                   <span className="flex items-center gap-1.5 text-[#084EA8]">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import logoImg from "../../../assets/backgrounds/logo.webp";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center justify-between flex-1">
         <Link to="/">
           <img
-            src="/src/assets/backgrounds/logo.webp"
+            src={logoImg}
             alt="Mount Treks Logo"
             className="h-11 w-auto cursor-pointer"
           />

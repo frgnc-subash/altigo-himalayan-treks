@@ -3,25 +3,23 @@ import { FaMountain, FaRegMap, FaStar, FaArrowDown } from "react-icons/fa";
 import Showcase from "./Showcase";
 
 const HeroSection = () => {
-  const backgroundImages = [
-    "/src/assets/backgrounds/bg2.webp",
-    "/src/assets/backgrounds/bg3.webp",
-    "/src/assets/backgrounds/bg4.webp",
-    "/src/assets/backgrounds/bg5.webp",
-    "/src/assets/backgrounds/bg6.webp",
-    "/src/assets/backgrounds/bg7.webp",
-    "/src/assets/backgrounds/bg8.webp",
-    "/src/assets/backgrounds/bg9.jpg",
-    "/src/assets/backgrounds/bg10.jpg",
-    "/src/assets/backgrounds/bg11.jpg",
-  ];
+  const imagesRecord = import.meta.glob(
+    "../../assets/backgrounds/*.{png,jpg,jpeg,webp}",
+    {
+      eager: true,
+      import: "default",
+    },
+  );
+
+  const backgroundImages = Object.values(imagesRecord) as string[];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (backgroundImages.length === 0) return;
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
-        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
+        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1,
       );
     }, 5000);
 
@@ -30,7 +28,7 @@ const HeroSection = () => {
 
   return (
     <div className="flex flex-col w-full bg-[#050505]">
-      <div className="relative w-full h-screen min-h-200 flex flex-col font-sans">
+      <div className="relative w-full h-screen min-h-175 flex flex-col font-sans">
         <div className="absolute inset-0 z-0 overflow-hidden bg-black">
           {backgroundImages.map((img, index) => (
             <div
@@ -49,7 +47,6 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/40 to-[#050505] z-10" />
         </div>
 
-        {/* ALIGNMENT FIX: Removed justify-center, added fixed pt-36 */}
         <div className="relative z-20 flex flex-col items-center pt-36 px-4 text-center h-full">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
             <span className="relative flex h-2 w-2">
