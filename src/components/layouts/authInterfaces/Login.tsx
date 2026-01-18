@@ -11,7 +11,7 @@ const Login = () => {
       {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/login.jpg"
+          src="/src/assets/backgrounds/login.jpg"
           alt="Login Background"
           className="w-full h-full object-cover opacity-60"
         />
