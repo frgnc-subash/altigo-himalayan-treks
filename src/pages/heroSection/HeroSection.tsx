@@ -1,0 +1,134 @@
+import { useState, useEffect } from "react";
+import { FaMountain, FaRegMap, FaStar, FaArrowDown } from "react-icons/fa";
+import Showcase from "./Showcase";
+
+const HeroSection = () => {
+  const backgroundImages = [
+    "/src/assets/backgrounds/bg2.webp",
+    "/src/assets/backgrounds/bg3.webp",
+    "/src/assets/backgrounds/bg4.webp",
+    "/src/assets/backgrounds/bg5.webp",
+    "/src/assets/backgrounds/bg6.webp",
+    "/src/assets/backgrounds/bg7.webp",
+    "/src/assets/backgrounds/bg8.webp",
+    "/src/assets/backgrounds/bg9.jpg",
+    "/src/assets/backgrounds/bg10.jpg",
+    "/src/assets/backgrounds/bg11.jpg",
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
+
+  return (
+    <div className="flex flex-col w-full bg-[#050505]">
+      <div className="relative w-full h-screen min-h-200 flex flex-col font-sans">
+        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+          {backgroundImages.map((img, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={img}
+                alt={`Slide ${index}`}
+                className="w-full h-full object-cover select-none brightness-[0.7]"
+              />
+            </div>
+          ))}
+          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/40 to-[#050505] z-10" />
+        </div>
+
+        {/* ALIGNMENT FIX: Removed justify-center, added fixed pt-36 */}
+        <div className="relative z-20 flex flex-col items-center pt-36 px-4 text-center h-full">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+            </span>
+            <span className="text-[11px] md:text-xs font-bold text-gray-200 uppercase tracking-widest">
+              Visit Nepal 2026
+            </span>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
+            CONQUER <br />
+            <span className="text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-400">
+              THE HIMALAYAS
+            </span>
+          </h1>
+
+          <p className="text-zinc-200 text-lg md:text-xl max-w-xl mb-10 leading-relaxed font-light drop-shadow-md">
+            From the streets of Kathmandu to the summit of Everest. We craft
+            journeys that define a lifetime.
+          </p>
+
+          <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-zinc-400 font-medium">
+            <span>Trending:</span>
+            <button className="hover:text-white hover:underline decoration-[#084EA8] underline-offset-4 transition-all">
+              Everest Base Camp
+            </button>
+            <button className="hover:text-white hover:underline decoration-[#084EA8] underline-offset-4 transition-all">
+              Annapurna Circuit
+            </button>
+            <button className="hover:text-white hover:underline decoration-[#084EA8] underline-offset-4 transition-all">
+              Mustang
+            </button>
+          </div>
+        </div>
+
+        <div className="relative z-10 w-full border-t border-white/10 bg-black/40 backdrop-blur-md hidden md:block">
+          <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-3 gap-8 text-white">
+            <div className="flex items-center gap-4 justify-center border-r border-white/10">
+              <FaMountain className="text-[#084EA8] text-2xl" />
+              <div className="text-left">
+                <p className="font-bold text-lg">1,200+</p>
+                <p className="text-xs text-zinc-400 uppercase tracking-wider">
+                  Successful Climbs
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 justify-center border-r border-white/10">
+              <FaRegMap className="text-[#084EA8] text-2xl" />
+              <div className="text-left">
+                <p className="font-bold text-lg">50+</p>
+                <p className="text-xs text-zinc-400 uppercase tracking-wider">
+                  Unique Routes
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 justify-center">
+              <FaStar className="text-[#084EA8] text-2xl" />
+              <div className="text-left">
+                <p className="font-bold text-lg">4.9/5</p>
+                <p className="text-xs text-zinc-400 uppercase tracking-wider">
+                  Traveler Rating
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 animate-bounce md:hidden z-10">
+          <FaArrowDown />
+        </div>
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto px-4 py-20">
+        <Showcase />
+      </div>
+    </div>
+  );
+};
+
+export default HeroSection;
