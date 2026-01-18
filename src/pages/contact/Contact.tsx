@@ -10,10 +10,12 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
+import contactBg from "../../assets/backgrounds/bg1.webp";
+
 const StaticBackground = memo(() => (
   <div className="absolute inset-0 z-0 pointer-events-none">
     <img
-      src="/src/assets/backgrounds/bg1.webp"
+      src={contactBg}
       alt="Himalayas"
       className="w-full h-full object-cover opacity-40"
     />
@@ -39,7 +41,6 @@ const StaticLeftContent = memo(() => (
       </p>
     </div>
 
-    {/* Contact Cards - Removed Backdrop Blur for Performance */}
     <div className="space-y-4">
       <div className="group flex items-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer">
         <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-[#084EA8] group-hover:scale-110 transition-all duration-300">
@@ -94,8 +95,6 @@ const StaticLeftContent = memo(() => (
   </div>
 ));
 
-// --- 4. FORM COMPONENT (ISOLATED STATE) ---
-// Only this component re-renders when typing
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -214,7 +213,6 @@ const ContactForm = () => {
   );
 };
 
-// --- 5. MAIN PAGE LAYOUT ---
 const Contact = () => {
   return (
     <>
