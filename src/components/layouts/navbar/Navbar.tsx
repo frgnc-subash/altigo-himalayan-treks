@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import logoImg from "../../../assets/backgrounds/logo.webp";
+import logoImg from "@/assets/logo.webp";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

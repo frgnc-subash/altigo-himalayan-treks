@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle, FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
-import signupBg from "../../../assets/backgrounds/signup.jpg";
+import signupBg from "@/assets/backgrounds/signup.jpg";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
