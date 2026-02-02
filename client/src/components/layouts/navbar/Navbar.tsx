@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { FaBars, FaTimes, FaGlobe } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-
 import logoImg from "@/assets/logo.webp";
-import { useCurrency } from "@/context/CurrencyContext";
 
 const Navbar: React.FC = () => {
-  const { i18n, t } = useTranslation();
-  const { selectedCurrency } = useCurrency();
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -59,7 +56,7 @@ const Navbar: React.FC = () => {
     <nav
       className={`fixed top-0 inset-x-0 z-100 transition-all duration-500 ${
         scrolled || isOpen
-          ? "bg-[#050505]/95 backdrop-blur-xl py-3 shadow-2xl border-b border-white/5"
+          ? "bg-[#050505]/95 backdrop-blur-xl py-3 shadow-2xl "
           : "bg-linear-to-b from-black/80 via-black/20 to-transparent py-6"
       }`}
     >
@@ -76,7 +73,7 @@ const Navbar: React.FC = () => {
                 className="h-8 lg:h-10 w-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
               />
               <span className="text-white font-black text-lg lg:text-xl tracking-tighter uppercase relative z-10 whitespace-nowrap">
-                Mount <span className="text-secondary">Treks</span>
+                Mount <span className="text-primary">Treks</span>
               </span>
             </Link>
 
@@ -125,26 +122,23 @@ const Navbar: React.FC = () => {
 
             {isOpen && (
               <Link
-                to="/settings"
-                className="flex items-center justify-center gap-3 mt-4 pt-6 border-t border-white/10 w-full text-zinc-400 font-bold uppercase text-[10px] tracking-widest hover:text-white transition-colors"
+                to="/packages"
+                className="mt-4 w-full py-4 bg-primary text-white text-center rounded-xl font-bold uppercase text-[10px] tracking-widest active:scale-95 transition-transform"
               >
-                <FaGlobe size={12} className="text-zinc-500" />
-                <span>{i18n.language.split("-")[0]}</span>
-                <span className="text-zinc-800">/</span>
-                <span>{selectedCurrency.code}</span>
+                {t("Make an Inquiry")}
               </Link>
             )}
           </div>
 
           <div className="hidden lg:flex items-center justify-end z-40 lg:flex-none">
             <Link
-              to="/settings"
-              className="flex items-center gap-3 px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/5"
+              to="/packages"
+              onClick={() =>
+                (window.location.href = "https://wa.me/9779707921000")
+              }
+              className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-primary/20 active:scale-95"
             >
-              <FaGlobe className="text-zinc-500" size={12} />
-              <span>
-                {i18n.language.split("-")[0]} / {selectedCurrency.code}
-              </span>
+              {t("Make an Inquiry")}
             </Link>
           </div>
         </div>

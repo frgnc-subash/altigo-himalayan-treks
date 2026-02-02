@@ -1,173 +1,135 @@
-import { useTranslation } from "react-i18next";
-import { FaMapMarkerAlt, FaClock, FaSignal, FaArrowRight } from "react-icons/fa";
-import mapImg from "@/assets/backgrounds/bg2.jpeg";
+import React, { useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { FaMountain, FaCloudSun, FaArrowRight } from "react-icons/fa";
+import { locations } from "../../data/locations";
+import Searchbar from "@/components/layouts/searchbar/Searchbar";
 
-const Destinations = () => {
- useTranslation();
+const createGlowIcon = (isSelected: boolean) =>
+  L.divIcon({
+    className: "custom-marker",
+    html: `<div class="relative flex items-center justify-center">
+    <span class="absolute inline-flex ${isSelected ? "h-8 w-8" : "h-4 w-4"} rounded-full bg-blue-500/30 animate-ping"></span>
+    <div class="relative ${isSelected ? "h-4 w-4 border-2 border-white" : "h-2 w-2 border border-white/50"} rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,1)] transition-all duration-500"></div>
+  </div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+  });
 
-  const regions = [
-    {
-      id: 1,
-      title: "Everest Base Camp",
-      region: "Khumbu Region",
-      image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=1000",
-      duration: "14 Days",
-      difficulty: "Challenging",
-      price: "$1,450",
-      tag: "Best Seller"
-    },
-    {
-      id: 2,
-      title: "Annapurna Sanctuary",
-      region: "Gandaki Province",
-      image: "https://images.unsplash.com/photo-1585016495481-91613a3ab1bc?auto=format&fit=crop&q=80&w=1000",
-      duration: "10 Days",
-      difficulty: "Moderate",
-      price: "$980",
-      tag: "Top Rated"
-    },
-    {
-      id: 3,
-      title: "Upper Mustang Trek",
-      region: "Hidden Kingdom",
-      image: "https://images.unsplash.com/photo-1623492701902-47dc207df5dc?auto=format&fit=crop&q=80&w=1000",
-      duration: "12 Days",
-      difficulty: "Moderate",
-      price: "$1,750",
-      tag: "Cultural"
-    },
-    {
-      id: 4,
-      title: "Langtang Valley",
-      region: "Rasuwa District",
-      image: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&q=80&w=1000",
-      duration: "8 Days",
-      difficulty: "Easy",
-      price: "$750",
-      tag: "Short Trek"
-    },
-    {
-      id: 5,
-      title: "Manaslu Circuit",
-      region: "Gorkha Region",
-      image: "https://images.unsplash.com/photo-1526715469446-0bb0a701980a?auto=format&fit=crop&q=80&w=1000",
-      duration: "16 Days",
-      difficulty: "Hard",
-      price: "$1,200",
-      tag: "Remote"
-    },
-    {
-      id: 6,
-      title: "Pokhara Valley",
-      region: "City of Lakes",
-      image: "https://images.unsplash.com/photo-1571504244444-9960d15c2d46?auto=format&fit=crop&q=80&w=1000",
-      duration: "4 Days",
-      difficulty: "Easy",
-      price: "$450",
-      tag: "Leisure"
-    }
-  ];
+const Destinations: React.FC = () => {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const filtered = useMemo(
+    () =>
+      locations.filter((l) =>
+        l.name.toLowerCase().includes(search.toLowerCase()),
+      ),
+    [search],
+  );
 
   return (
-    <div className="bg-[#050505] min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-        <img 
-          src={mapImg} 
-          alt="Map Background" 
-          className="w-full h-full object-cover scale-110 rotate-2 select-none"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-[#050505] via-transparent to-[#050505]" />
-        <div className="absolute inset-0 bg-linear-to-r from-[#050505] via-transparent to-[#050505]" />
-      </div>
+    <div className="bg-[#050505] min-h-screen flex flex-col relative font-sans text-zinc-200">
+      <section className="relative w-full h-[55vh] z-0">
+        <MapContainer
+          center={[28.3949, 84.124]}
+          zoom={7}
+          scrollWheelZoom
+          className="w-full h-full bg-[#050505]"
+          zoomControl={false}
+          attributionControl={false}
+        >
+          <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
+          {locations.map((loc) => (
+            <Marker
+              key={loc.id}
+              position={[loc.lat, loc.lng]}
+              icon={createGlowIcon(false)}
+              eventHandlers={{
+                click: () => navigate(`/destinations/${loc.id}`),
+              }}
+            />
+          ))}
+        </MapContainer>
+        <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-[#050505] to-transparent z-40 pointer-events-none" />
+      </section>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-40 pb-24">
-        <div className="relative mb-24">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-12 bg-[#e02b34]"></span>
-            <span className="text-[#e02b34] text-[10px] font-black uppercase tracking-[0.6em]">
-              Regional Expeditions
+      <section className="relative w-full bg-[#050505] z-10 flex flex-col min-h-[45vh]">
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-6 relative">
+          <div className="sticky top-0 z-50 pt-4 pb-8 flex flex-col items-center justify-center gap-2 border-b border-white/5 bg-[#050505]/80 backdrop-blur-xl">
+            <div className="absolute -top-10 left-0 w-full h-10 bg-linear-to-t from-[#050505]/80 to-transparent pointer-events-none" />
+
+            <Searchbar
+              onSearch={(q) => setSearch(q)}
+              containerClassName="w-full max-w-md"
+            />
+            <span className="text-[10px] text-zinc-600 uppercase tracking-widest font-mono mt-2">
+              {filtered.length} Locations Found
             </span>
           </div>
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-[0.9]">
-            PLAN YOUR <br />
-            <span className="text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-700">TRIPS NOW.</span>
-          </h1>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-          {regions.map((dest) => (
-            <div key={dest.id} className="group relative flex flex-col">
-              <div className="relative aspect-4/5 rounded-4xl overflow-hidden mb-8 shadow-2xl shadow-black">
-                <img 
-                  src={dest.image} 
-                  alt={dest.title}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent" />
-                
-                <div className="absolute top-6 left-6">
-                  <span className="px-4 py-1.5 bg-black/40 backdrop-blur-xl border border-white/10 text-white text-[9px] font-black uppercase tracking-widest rounded-xl">
-                    {dest.tag}
-                  </span>
+          <div className="py-8 flex flex-col gap-6 max-w-5xl mx-auto">
+            {filtered.map((loc) => (
+              <motion.div
+                key={loc.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                onClick={() => navigate(`/destinations/${loc.id}`)}
+                className="group flex flex-col md:flex-row items-stretch gap-8 p-5 rounded-3xl bg-zinc-900/20 border border-white/5 hover:border-blue-500/40 transition-all duration-500 cursor-pointer"
+              >
+                <div className="relative w-full md:w-80 h-56 md:h-48 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-2xl">
+                  <img
+                    src={loc.image}
+                    alt={loc.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <span className="px-3 py-1 rounded-lg bg-blue-600 text-[10px] font-black text-white uppercase tracking-tighter shadow-lg">
+                      {loc.difficulty}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-[#e02b34]">
-                      <FaMapMarkerAlt size={10} />
-                      <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">{dest.region}</span>
+                <div className="flex-1 flex flex-col justify-center py-2">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h4 className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors uppercase">
+                        {loc.name}
+                      </h4>
+                      <div className="flex items-center gap-3 mt-1 text-zinc-500">
+                        <span className="flex items-center gap-1.5 font-mono">
+                          <FaMountain className="text-xs" />
+                          {loc.altitude}
+                        </span>
+                        <span className="flex items-center gap-1.5 font-mono">
+                          <FaCloudSun className="text-xs" />
+                          {loc.season}
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none">
-                      {dest.title}
-                    </h3>
+                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 group-hover:bg-blue-600 group-hover:text-white transition-all transform group-hover:rotate-45">
+                      <FaArrowRight size={14} />
+                    </div>
+                  </div>
+                  <p className="text-zinc-400 leading-relaxed line-clamp-2 mb-6 font-light italic">
+                    {loc.desc}
+                  </p>
+                  <div className="flex items-center gap-4 mt-auto">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500/80">
+                      Explore Region
+                    </span>
+                    <div className="h-px flex-1 bg-linear-to-r from-blue-500/20 to-transparent" />
                   </div>
                 </div>
-              </div>
-
-              <div className="px-2">
-                <div className="flex items-center gap-8 mb-8">
-                  <div className="flex items-center gap-2.5">
-                    <FaClock size={12} className="text-[#e02b34]" />
-                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">{dest.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <FaSignal size={12} className="text-[#e02b34]" />
-                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">{dest.difficulty}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-8 border-t border-white/5">
-                  <div>
-                    <span className="block text-[9px] text-zinc-600 font-black uppercase tracking-[0.2em] mb-1">Starting From</span>
-                    <span className="text-2xl font-black text-white tracking-tight">{dest.price}</span>
-                  </div>
-                  <button className="h-14 px-8 bg-white/5 border border-white/10 hover:bg-white hover:text-black text-white rounded-2xl transition-all duration-300 font-black text-[10px] uppercase tracking-widest flex items-center gap-3 active:scale-95">
-                    Explore
-                    <FaArrowRight size={10} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-40 p-16 rounded-[48px] bg-white/2 border border-white/5 relative overflow-hidden backdrop-blur-3xl">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#e02b34]/5 blur-[120px] rounded-full -mr-48 -mt-48" />
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="text-left max-w-xl">
-              <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-6 tracking-tighter leading-none">
-                Not found the <br /><span className="text-[#e02b34]">Perfect Path?</span>
-              </h2>
-              <p className="text-zinc-500 text-lg font-light leading-relaxed">
-                Connect with our mountain guides to design a custom expedition tailored to your experience level and ambitions.
-              </p>
-            </div>
-            <button className="shrink-0 px-12 py-6 bg-white text-black font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:bg-[#e02b34] hover:text-white transition-all duration-500 shadow-2xl shadow-black">
-              Custom Expedition
-            </button>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
