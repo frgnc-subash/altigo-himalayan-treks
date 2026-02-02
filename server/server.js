@@ -1,10 +1,9 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { Resend } from "resend";
-import "dotenv/config";
 
 const app = express();
-const port = process.env.PORT || 4000;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.use(cors());
@@ -16,6 +15,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/send-email", async (req, res) => {
   const { name, email, subject, message } = req.body;
+
   const VERIFIED_SENDER = "info@mounttreks.com";
   const ADMIN_RECEIVER = "mounttrekspvtltd@gmail.com";
 
@@ -68,6 +68,9 @@ app.post("/api/send-email", async (req, res) => {
                 <p style="font-size: 16px; line-height: 26px; color: #444;">
                   Thank you for reaching out to us about the <strong>${subject}</strong>. Your passion for adventure is inspiring, and we'd love to help you reach the peaks!
                 </p>
+                <p style="font-size: 16px; line-height: 26px; color: #444;">
+                  Our expert Sherpa guides are currently reviewing your request. We'll get back to you within 24 hours with a personalized itinerary and essential trekking details.
+                </p>
                 <div style="margin: 32px 0; padding: 24px; background-color: #f0f7ff; border-radius: 12px;">
                   <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px; text-transform: uppercase;">What happens next?</h4>
                   <ul style="margin: 0; padding: 0; list-style: none; font-size: 14px; color: #374151;">
@@ -79,6 +82,12 @@ app.post("/api/send-email", async (req, res) => {
                 <p style="font-size: 16px; line-height: 26px; color: #444;">
                   Best Regards,<br />
                   <span style="font-weight: 800; color: #000;">The Mount Treks Team</span>
+                </p>
+              </div>
+              <div style="background-color: #f9fafb; padding: 30px; text-align: center; border-top: 1px solid #eaeaea;">
+                <p style="margin: 0; font-size: 13px; color: #999;">
+                  Thamel Marg, Kathmandu, Nepal <br />
+                  +977 9707921000| info@mounttreks.com
                 </p>
               </div>
             </div>
@@ -106,12 +115,17 @@ app.post("/api/send-email", async (req, res) => {
         html: CUSTOMER_HTML,
       },
     ]);
+
+    if (data.error) throw new Error(data.error.message);
+
     res.status(200).json({ success: true, data });
   } catch (error) {
+    console.error("Submission Error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`Server running on port ${PORT}`),
+);

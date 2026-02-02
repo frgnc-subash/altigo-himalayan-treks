@@ -16,6 +16,7 @@ import {
 
 import contactBg from "../../assets/backgrounds/bg1.jpeg";
 
+
 const API_URL = "https://mount-treks.onrender.com/api/send-email";
 
 const socialLinks = [
@@ -66,14 +67,14 @@ const StaticContactDetails = memo(() => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
       <div className="group flex items-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
         <div className="shrink-0 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-primary transition-all">
-          <FaMapMarkerAlt size={18} />
+          < FaMapMarkerAlt  size={18} />
         </div>
         <div className="ml-4">
           <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
             Visit Us
           </h4>
           <p className="text-white text-sm sm:text-base font-medium">
-            Thamel Area - Yapikhya Marg, Kathmandu
+            Thamel Area - Yapikhya Marg, Kathmandu 
           </p>
         </div>
       </div>
