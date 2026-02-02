@@ -4,7 +4,15 @@ import { Resend } from "resend";
 import "dotenv/config";
 
 const app = express();
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const apiKey = process.env.RESEND_API_KEY;
+if (!apiKey) {
+  console.error(
+    "CRITICAL ERROR: RESEND_API_KEY is not defined in environment variables.",
+  );
+}
+
+const resend = new Resend(apiKey);
 
 app.use(cors());
 app.use(express.json());
@@ -125,7 +133,5 @@ app.post("/api/send-email", async (req, res) => {
   }
 });
 
-const PORT = 5000;
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`),
-);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
