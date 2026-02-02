@@ -16,7 +16,6 @@ import {
 
 import contactBg from "../../assets/backgrounds/bg1.jpeg";
 
-
 const API_URL = "https://mount-treks.onrender.com/api/send-email";
 
 const socialLinks = [
@@ -67,14 +66,14 @@ const StaticContactDetails = memo(() => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
       <div className="group flex items-center p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
         <div className="shrink-0 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-primary transition-all">
-          < FaMapMarkerAlt  size={18} />
+          <FaMapMarkerAlt size={18} />
         </div>
         <div className="ml-4">
           <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
             Visit Us
           </h4>
           <p className="text-white text-sm sm:text-base font-medium">
-            Thamel Area - Yapikhya Marg, Kathmandu 
+            Thamel Area - Yapikhya Marg, Kathmandu
           </p>
         </div>
       </div>
@@ -148,13 +147,19 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setStatus({ type: null, message: "" });
+
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(formData),
       });
+
       const result = await response.json();
+
       if (response.ok && result.success) {
         setStatus({
           type: "success",
@@ -219,7 +224,7 @@ const ContactForm = () => {
               className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl px-4 py-3.5 appearance-none focus:ring-2 focus:ring-primary/50 cursor-pointer outline-hidden"
             >
               <option value="" disabled>
-                Select a Trek or Topic
+                Select a Topic
               </option>
               <option value="packages">Packages</option>
               <option value="materials">Materials</option>
@@ -333,16 +338,13 @@ const Contact = () => {
               <StaticContactDetails />
             </div>
           </div>
-
           <div className="w-full lg:w-1/2">
             <ContactForm />
-
             <div className="block lg:hidden mt-12">
               <StaticContactDetails />
             </div>
           </div>
         </div>
-
         <FAQSection />
       </div>
     </section>

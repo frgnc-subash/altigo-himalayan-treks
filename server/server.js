@@ -6,7 +6,12 @@ import { Resend } from "resend";
 const app = express();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -127,5 +132,5 @@ app.post("/api/send-email", async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () =>
-  console.log(`Server running on port ${PORT}`),
+  console.log(`Server running on port ${PORT}`)
 );
