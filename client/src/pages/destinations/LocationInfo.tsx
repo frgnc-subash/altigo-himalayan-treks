@@ -37,7 +37,7 @@ const createGlowIcon = (color: string, size: number = 20) =>
 const CustomZoomControls = () => {
   const map = useMap();
   return (
-    <div className="absolute bottom-10 right-6 z-1000 flex flex-col gap-2">
+    <div className="absolute bottom-10 right-6 z-20 flex flex-col gap-2">
       <button
         onClick={() => map.zoomIn()}
         className="w-10 h-10 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl flex items-center justify-center text-white hover:bg-blue-600 hover:border-blue-600 transition-all shadow-xl"
@@ -81,9 +81,16 @@ const LocationInfo: React.FC = () => {
 
   const polylineCoords = fullTrail.map((t) => t.pos);
 
+  const scrollToDay = (dayIndex: number) => {
+    const element = document.getElementById(`day-section-${dayIndex}`);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   return (
     <div className="bg-[#050505] min-h-screen text-zinc-100 font-sans pb-20 pt-24 lg:pt-28">
-      <nav className="px-6 mb-8 flex justify-start max-w-7xl mx-auto z-50 relative">
+      <nav className="px-6 mb-8 flex justify-start max-w-7xl mx-auto z-10 relative">
         <button
           onClick={() => navigate("/destinations")}
           className="group flex items-center gap-4 text-zinc-500 hover:text-white transition-all duration-500"
@@ -97,7 +104,7 @@ const LocationInfo: React.FC = () => {
         </button>
       </nav>
 
-      <section className="max-w-7xl mx-auto px-6 mb-12">
+      <section className="max-w-7xl mx-auto px-6 mb-12 relative z-0">
         <div className="h-[55vh] md:h-[65vh] w-full rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl relative group/map">
           <MapContainer
             center={[28.5, 84.3]}
@@ -122,6 +129,7 @@ const LocationInfo: React.FC = () => {
               <Marker
                 key={idx}
                 position={point.pos}
+                eventHandlers={{ click: () => scrollToDay(idx + 1) }}
                 icon={createGlowIcon(
                   point.type === "destination"
                     ? "bg-blue-600"
@@ -146,7 +154,7 @@ const LocationInfo: React.FC = () => {
             <CustomZoomControls />
           </MapContainer>
 
-          <div className="absolute top-6 right-6 z-1000 bg-black/70 backdrop-blur-xl border border-white/10 p-5 rounded-3xl hidden lg:block w-56">
+          <div className="absolute top-6 right-6 z-20 bg-black/70 backdrop-blur-xl border border-white/10 p-5 rounded-3xl hidden lg:block w-56">
             <h4 className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-4 border-b border-white/5 pb-2">
               Expedition Log
             </h4>
@@ -154,7 +162,8 @@ const LocationInfo: React.FC = () => {
               {fullTrail.map((point, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3 group/item cursor-default"
+                  onClick={() => scrollToDay(idx + 1)}
+                  className="flex items-center gap-3 group/item cursor-pointer"
                 >
                   <div
                     className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${point.type === "destination" ? "bg-blue-500 scale-125 shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "bg-zinc-700 group-hover/item:bg-blue-400"}`}
@@ -169,7 +178,7 @@ const LocationInfo: React.FC = () => {
             </div>
           </div>
 
-          <div className="absolute bottom-6 left-6 z-1000 px-4 py-2 bg-black/60 backdrop-blur-md border border-white/10 rounded-full">
+          <div className="absolute bottom-6 left-6 z-20 px-4 py-2 bg-black/60 backdrop-blur-md border border-white/10 rounded-full">
             <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
               Interactivity: Scroll to Zoom • Drag to Pan
             </p>
@@ -212,13 +221,14 @@ const LocationInfo: React.FC = () => {
         <div className="space-y-24 md:space-y-48">
           {pkg.itinerary.map((step, i) => (
             <motion.div
+              id={`day-section-${step.day}`}
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               className={`relative flex flex-col md:flex-row items-center gap-8 md:gap-24 ${i % 2 === 0 ? "md:flex-row-reverse" : ""}`}
             >
-              <div className="md:absolute md:left-1/2 md:-translate-x-1/2 z-30 w-12 h-12 md:w-16 md:h-16 rounded-full bg-blue-600 md:bg-zinc-950 border-2 border-blue-600 flex flex-col items-center justify-center absolute -top-5 left-4 md:top-auto shadow-xl shadow-blue-500/20">
+              <div className="md:absolute md:left-1/2 md:-translate-x-1/2 z-10 w-12 h-12 md:w-16 md:h-16 rounded-full bg-blue-600 md:bg-zinc-950 border-2 border-blue-600 flex flex-col items-center justify-center absolute -top-5 left-4 md:top-auto shadow-xl shadow-blue-500/20">
                 <span className="text-lg md:text-xl font-black text-white leading-none">
                   {step.day}
                 </span>
@@ -282,7 +292,7 @@ const LocationInfo: React.FC = () => {
           __html: `
         ::-webkit-scrollbar { width: 0px; } 
         body { background-color: #050505; } 
-        .leaflet-container { background: #050505 !important; cursor: grab !important; }
+        .leaflet-container { background: #050505 !important; cursor: grab !important; z-index: 0 !important; }
         .leaflet-container:active { cursor: grabbing !important; }
         .leaflet-tooltip { background: #18181b !important; border: 1px solid rgba(255,255,255,0.1) !important; color: #fff !important; }
         .leaflet-tooltip-top:before { border-top-color: rgba(255,255,255,0.1) !important; }
