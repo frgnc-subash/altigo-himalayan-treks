@@ -28,8 +28,8 @@ const Footer: React.FC = () => {
                 className="h-9 w-auto transition-transform duration-500 group-hover:rotate-3"
               />
               <h1 className="text-xl font-extrabold uppercase tracking-tighter flex">
-                <span className="text-white">Mount</span>
-                <span className="text-primary">Treks</span>
+                <span className="text-white">Altigo</span>
+                <span className="text-primary">Himalayan Treks</span>
               </h1>
             </Link>
 
@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
 
         <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-2">
           <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">
-            © {currentYear} MOUNT TREKS. {t("all_rights")}.
+            © {currentYear} ALTIGO HIMALAYAN TREKS. {t("all_rights")}.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-[9px] font-black uppercase tracking-[0.6em] text-zinc-800 select-none">

@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
                 className="h-8 lg:h-10 w-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
               />
               <span className="text-white font-black text-lg lg:text-xl tracking-tighter uppercase relative z-10 whitespace-nowrap">
-                Mount <span className="text-primary">Treks</span>
+                Altigo <span className="text-primary">Himalayan Treks</span>
               </span>
             </Link>
 
