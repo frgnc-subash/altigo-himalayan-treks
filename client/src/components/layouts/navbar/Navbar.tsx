@@ -50,17 +50,17 @@ const Navbar: React.FC = () => {
   ];
 
   const commonLinkClasses =
-    "relative px-4 lg:px-5 py-2.5 text-sm font-medium transition-all duration-300 rounded-lg flex items-center justify-center gap-2";
+    "relative px-4 lg:px-5 py-2 text-sm font-medium transition-all duration-300 rounded-lg flex items-center justify-center gap-2";
 
   return (
     <nav
       className={`fixed top-0 inset-x-0 z-100 transition-all duration-500 ${
         scrolled || isOpen
           ? "bg-[#050505]/95 backdrop-blur-xl py-3 shadow-2xl "
-          : "bg-linear-to-b from-black/80 via-black/20 to-transparent py-6"
+          : "bg-linear-to-b from-black/80 via-black/20 to-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-between w-full lg:w-auto lg:flex-none">
             <Link
@@ -70,16 +70,21 @@ const Navbar: React.FC = () => {
               <img
                 src={logoImg}
                 alt="Logo"
-                className="h-8 lg:h-10 w-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
+                className="h-8 md:h-9 lg:h-10 w-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
               />
-              <span className="text-white font-black text-lg lg:text-xl tracking-tighter uppercase relative z-10 whitespace-nowrap">
-                Altigo <span className="text-primary">Himalayan Treks</span>
-              </span>
+              <div className="flex flex-col leading-[1.1]">
+                <span className="text-white font-black text-sm md:text-base lg:text-lg tracking-tighter uppercase relative z-10 whitespace-nowrap">
+                  Altigo
+                </span>
+                <span className="text-primary font-black text-[10px] md:text-[11px] lg:text-xs tracking-tighter uppercase relative z-10 whitespace-nowrap">
+                  Himalayan Treks
+                </span>
+              </div>
             </Link>
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 text-white bg-white/10 rounded-xl active:scale-95 transition-all"
+              className="lg:hidden p-2 text-white bg-white/10 rounded-xl active:scale-95 transition-all ml-4"
             >
               {isOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
             </button>
@@ -109,7 +114,9 @@ const Navbar: React.FC = () => {
                 to={item.path}
                 onMouseEnter={(e) => handleMouseEnter(e.currentTarget)}
                 className={({ isActive }) =>
-                  `${commonLinkClasses} ${isOpen ? "w-full justify-start py-4" : "w-auto"} ${
+                  `${commonLinkClasses} ${
+                    isOpen ? "w-full justify-start py-4" : "w-auto"
+                  } ${
                     isActive
                       ? "text-secondary font-bold"
                       : "text-white/90 hover:text-white"
@@ -136,7 +143,7 @@ const Navbar: React.FC = () => {
               onClick={() =>
                 (window.location.href = "https://wa.me/9779707921000")
               }
-              className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-primary/20 active:scale-95"
+              className="px-5 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-primary/20 active:scale-95"
             >
               {t("Make an Inquiry")}
             </Link>

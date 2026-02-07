@@ -16,21 +16,24 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-[#050505] border-t border-white/5 pt-20 pb-10 relative">
+    <footer className="bg-[#050505] border-t border-white/5 pt-16 md:pt-20 pb-10 relative">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
-          {/* Brand Section */}
-          <div className="col-span-1 md:col-span-5 space-y-8">
-            <Link to="/" className="flex items-center gap-3 group">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 md:mb-20">
+          <div className="col-span-1 md:col-span-5 space-y-6 md:space-y-8">
+            <Link to="/" className="flex items-center gap-3 group w-fit">
               <img
                 src={logoImg}
                 alt="Logo"
-                className="h-9 w-auto transition-transform duration-500 group-hover:rotate-3"
+                className="h-8 md:h-9 lg:h-10 w-auto transition-transform duration-500 group-hover:rotate-3"
               />
-              <h1 className="text-xl font-extrabold uppercase tracking-tighter flex">
-                <span className="text-white">Altigo</span>
-                <span className="text-primary">Himalayan Treks</span>
-              </h1>
+              <div className="flex flex-col leading-[1.1]">
+                <span className="text-white font-black text-sm md:text-base lg:text-lg tracking-tighter uppercase whitespace-nowrap">
+                  Altigo
+                </span>
+                <span className="text-primary font-black text-[10px] md:text-[11px] lg:text-xs tracking-tighter uppercase whitespace-nowrap">
+                  Himalayan Treks
+                </span>
+              </div>
             </Link>
 
             <p className="text-zinc-500 text-sm leading-relaxed max-w-sm">
@@ -46,6 +49,8 @@ const Footer: React.FC = () => {
                 <a
                   key={idx}
                   href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-white transition-all duration-500"
                 >
                   <item.Icon size={14} />
@@ -57,7 +62,7 @@ const Footer: React.FC = () => {
           <div className="hidden md:block md:col-span-1" />
 
           <div className="col-span-1 md:col-span-3">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-600 mb-8">
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-600 mb-6 md:mb-8">
               {t("Menu")}
             </h4>
             <ul className="space-y-4">
@@ -76,7 +81,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="col-span-1 md:col-span-3">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-600 mb-8">
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-600 mb-6 md:mb-8">
               {t("Office")}
             </h4>
             <div className="space-y-4">
@@ -97,8 +102,8 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-2">
-          <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">
+        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest text-center md:text-left">
             © {currentYear} ALTIGO HIMALAYAN TREKS. {t("all_rights")}.
           </p>
           <div className="flex items-center gap-4">
