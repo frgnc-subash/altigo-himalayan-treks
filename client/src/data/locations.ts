@@ -24,4 +24,15 @@ export const locations: Location[] = [
     difficulty: "Moderate",
     season: "March - November",
   },
+  // {
+  //   id: "annapurna-circuit",
+  //   name: "Annapurna Circuit",
+  //   lat: 29.1833,
+  //   lng: 83.95,
+  //   image: bg1,
+  //   desc: "A trans-Himalayan salt-trade route offering a look into a forbidden kingdom of ancient monasteries, sky caves, and stark desert beauty preserved for centuries.",
+  //   altitude: "3,840m",
+  //   difficulty: "Moderate",
+  //   season: "March - November",
+  // },
 ];

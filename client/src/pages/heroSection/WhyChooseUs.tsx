@@ -46,7 +46,7 @@ const WhyChooseUs: React.FC = () => {
           </div>
           
           <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none">
-            {t("why", "WHY")} <span className="text-transparent stroke-zinc-700" style={{ WebkitTextStroke: '1px #3f3f46' }}>{t("expedition", "EXPEDITION")}</span> <br /> 
+            {t("why", "WHY")} <span  style={{ WebkitTextStroke: '1px #3f3f46' }}>{t("expedition", "EXPEDITION")}</span> <br /> 
             <span className="text-white">{t("with_us", "WITH US")}</span>
           </h2>
         </div>

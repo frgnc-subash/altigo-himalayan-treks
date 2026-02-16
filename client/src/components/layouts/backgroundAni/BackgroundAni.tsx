@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 const BackgroundAni = () => {
-  // Adjusted path to reach /src/assets/backgrounds from /src/components/layouts/backgroundAni/
   const imagesRecord = import.meta.glob(
     "../../../assets/backgrounds/*.{png,jpg,jpeg,webp}",
     {

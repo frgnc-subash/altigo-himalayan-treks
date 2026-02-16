@@ -9,8 +9,8 @@ import {
 
 interface SearchbarProps {
   containerClassName?: string;
-  isInline?: boolean; // New prop
-  onSearch?: (query: string) => void; // Callback for the Destinations page
+  isInline?: boolean;
+  onSearch?: (query: string) => void;
 }
 
 const HighlightText = ({
