@@ -59,15 +59,17 @@ function SectionHeader({
     <div className="relative isolate mb-8 text-center md:mb-10">
       <span
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 w-full -translate-x-1/2 -translate-y-1/2 text-center text-5xl font-black tracking-[0.16em] text-white/5 uppercase sm:text-7xl md:text-8xl lg:text-9xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 w-full -translate-x-1/2 -translate-y-1/2 text-center text-4xl font-black tracking-[0.16em] text-white/5 uppercase sm:text-7xl md:text-8xl lg:text-9xl"
       >
         {shadowText}
       </span>
       <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">{eyebrow}</p>
-      <h2 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+      <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
         {title}
       </h2>
-      <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-300 sm:text-base">{description}</p>
+      <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-zinc-300 sm:text-base">
+        {description}
+      </p>
     </div>
   );
 }
@@ -121,17 +123,17 @@ function WhyChooseUs() {
             ))}
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-          <p className="absolute left-5 bottom-5 rounded-full border border-white/20 bg-black/30 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+          <p className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm sm:left-5 sm:bottom-5 sm:px-3 sm:text-[11px]">
             Different locations, one trusted team
           </p>
-          <div className="h-[360px] md:h-[420px]" />
+          <div className="h-[300px] sm:h-[360px] md:h-[420px]" />
         </article>
 
         <div className="grid gap-3">
           {points.map((item) => (
             <article
               key={item.title}
-              className="rounded-2xl border border-white/10 bg-linear-to-br from-[#0b0b0c] via-[#09090a] to-[#070708] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.45)] transition-colors hover:border-white/20"
+              className="rounded-2xl border border-white/10 bg-linear-to-br from-[#0b0b0c] via-[#09090a] to-[#070708] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.45)] transition-colors hover:border-white/20 sm:p-5"
             >
               <div className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.04]">
                 <item.icon className="h-4.5 w-4.5 text-zinc-100" />
@@ -235,7 +237,7 @@ function CustomerSay() {
           </div>
         </div>
 
-        <div className="testimonial-marquee">
+        <div className="hidden md:block testimonial-marquee">
           <div className="testimonial-track testimonial-track-reverse">
             {row2.map((item, idx) => (
               <article
@@ -306,7 +308,7 @@ function FeaturedDestinations() {
               </p>
             </div>
 
-            <div className="flex h-[200px] flex-col p-4">
+            <div className="flex min-h-[176px] flex-col p-4 sm:h-[200px]">
               <p className="text-sm text-zinc-300">{item.duration}</p>
               <p className="mt-2 text-sm text-zinc-400">{item.summary}</p>
               <Link
@@ -328,25 +330,25 @@ export default function Home() {
 
   return (
     <main className="flex w-full flex-col bg-[#050505]">
-      <section className="relative flex h-[90vh] min-h-[520px] w-full flex-col overflow-hidden md:h-screen">
+      <section className="relative flex h-[84vh] min-h-[480px] w-full flex-col overflow-hidden sm:h-[90vh] sm:min-h-[520px] md:h-screen">
         <BackgroundAni />
 
-        <div className="relative z-20 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-center px-6 pt-10 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 backdrop-blur-md md:mb-8">
+        <div className="relative z-20 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-center px-5 pt-14 text-center sm:px-6 sm:pt-10">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 backdrop-blur-md sm:mb-8">
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
             <span className="text-[9px] font-bold tracking-[0.2em] text-gray-200 uppercase md:text-xs">
               VISIT NEPAL {year}
             </span>
           </div>
 
-          <h1 className="mb-4 text-3xl font-black leading-[1.1] tracking-tight text-white uppercase sm:text-6xl md:mb-6 md:text-7xl lg:text-8xl">
+          <h1 className="mb-4 text-2xl font-black leading-[1.1] tracking-tight text-white uppercase sm:text-6xl md:mb-6 md:text-7xl lg:text-8xl">
             CONQUER THE <br />
             <span className="text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-500">
               HIMALAYAS
             </span>
           </h1>
 
-          <p className="mb-6 max-w-2xl text-sm leading-relaxed font-light text-zinc-300 sm:text-lg lg:text-xl md:mb-10">
+          <p className="mb-6 max-w-xl text-sm leading-relaxed font-light text-zinc-300 sm:max-w-2xl sm:text-lg lg:text-xl md:mb-10">
             Experience the thrill of high-altitude trekking with certified
             guides. From Everest Base Camp to the Annapurna Circuit, we take
             you higher.
@@ -373,7 +375,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-14 px-5 py-8 sm:px-8 md:gap-28 md:py-16">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-12 px-5 py-8 sm:px-8 md:gap-28 md:py-16">
         <WhyChooseUs />
         <FeaturedDestinations />
         <HomeGallery />

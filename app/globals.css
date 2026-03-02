@@ -250,6 +250,31 @@
   animation-play-state: paused;
 }
 
+@media (max-width: 767px) {
+  .testimonial-marquee {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    mask-image: none;
+    -webkit-mask-image: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .testimonial-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial-track {
+    animation: none;
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+  }
+
+  .testimonial-track-reverse {
+    animation: none;
+  }
+}
+
 @keyframes testimonial-marquee {
   from {
     transform: translateX(0);
