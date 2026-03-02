@@ -149,9 +149,9 @@ export default function DestinationsPage() {
   };
 
   return (
-    <main className="bg-background text-foreground">
-      <section className="mx-auto w-full max-w-7xl px-5 pb-16 pt-0 sm:px-8">
-        <div className="relative left-1/2 w-screen -translate-x-1/2 sm:w-[110vw]">
+    <main className="overflow-x-hidden bg-background text-foreground">
+      <section className="mx-auto w-full max-w-7xl overflow-x-hidden px-5 pb-16 pt-0 sm:px-8">
+        <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
           <DestinationMap
             locations={hasActiveFilters ? filteredDestinations : destinations}
             className="h-[68vh] min-h-[440px] w-full rounded-none border-0 shadow-none"
@@ -264,7 +264,7 @@ export default function DestinationsPage() {
               className="overflow-hidden rounded-2xl bg-card/35 shadow-[0_14px_34px_rgba(0,0,0,0.25)]"
             >
               <div className="grid md:grid-cols-[1.2fr_1fr]">
-                <div className="relative h-44 md:col-start-2 md:h-[250px]">
+                <div className="relative h-44 md:col-start-2 md:row-start-1 md:h-[250px]">
                   <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   <p className="absolute bottom-3 left-3 text-sm font-semibold text-white">
@@ -272,7 +272,7 @@ export default function DestinationsPage() {
                   </p>
                 </div>
 
-                <div className="flex h-full flex-col p-4 sm:p-5 md:col-start-1">
+                <div className="flex h-full flex-col p-4 sm:p-5 md:col-start-1 md:row-start-1">
                   <div className="mb-2 flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h2 className="text-xl font-semibold leading-tight">{item.name}</h2>
@@ -314,7 +314,7 @@ export default function DestinationsPage() {
                     </p>
                   </div>
 
-                  <div className="mt-auto pt-4">
+                  <div className="pt-4">
                     <Link
                       href={`/destinations/${item.id}`}
                       className="inline-flex h-10 items-center justify-center gap-1 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
