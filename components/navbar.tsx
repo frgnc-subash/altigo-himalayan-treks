@@ -45,6 +45,34 @@ export default function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [isOpen]);
+
   const navItems = [
     { label: t("Home"), path: "/" },
     { label: t("Destinations"), path: "/destinations" },
@@ -56,109 +84,152 @@ export default function Navbar() {
     "relative px-4 lg:px-5 py-2 text-sm font-medium transition-all duration-300 rounded-lg flex items-center justify-center gap-2";
 
   return (
-    <nav
-      className={`fixed top-0 inset-x-0 z-[2000] transition-all duration-500 ${
-        scrolled || isOpen
-          ? "bg-[#050505]/95 backdrop-blur-xl py-3 shadow-2xl"
-          : "bg-linear-to-b from-black/80 via-black/20 to-transparent py-5"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center justify-between w-full lg:w-auto lg:flex-none">
-            <Link
-              href="/"
-              className="shrink-0 relative group flex items-center gap-3"
-            >
-              <div className="relative h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10">
-                <Image
-                  src="/logo.webp"
-                  alt="Altigo Treks Logo"
-                  fill
-                  className="object-contain transition-transform duration-500 group-hover:scale-105"
-                  priority
-                />
-              </div>
-              <div className="flex flex-col leading-[1.1]">
-                <span className="text-white font-black text-sm md:text-base lg:text-lg tracking-tighter uppercase relative z-10 whitespace-nowrap">
-                  Altigo
-                </span>
-                <span className="text-primary font-black text-[10px] md:text-[11px] lg:text-xs tracking-tighter uppercase relative z-10 whitespace-nowrap">
-                  Himalayan Treks
-                </span>
-              </div>
-            </Link>
+    <>
+      <nav
+        className={`fixed top-0 inset-x-0 z-[2200] transition-all duration-500 ${
+          scrolled || isOpen
+            ? "bg-[#050505]/95 py-3 shadow-2xl backdrop-blur-xl"
+            : "bg-linear-to-b from-black/80 via-black/20 to-transparent py-5"
+        }`}
+      >
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex w-full items-center justify-between lg:w-auto lg:flex-none">
+              <Link
+                href="/"
+                className="relative flex shrink-0 items-center gap-3 group"
+              >
+                <div className="relative h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10">
+                  <Image
+                    src="/logo.webp"
+                    alt="Altigo Treks Logo"
+                    fill
+                    className="object-contain transition-transform duration-500 group-hover:scale-105"
+                    priority
+                  />
+                </div>
+                <div className="flex flex-col leading-[1.1]">
+                  <span className="relative z-10 text-sm font-black tracking-tighter text-white uppercase whitespace-nowrap md:text-base lg:text-lg">
+                    Altigo
+                  </span>
+                  <span className="relative z-10 text-[10px] font-black tracking-tighter text-primary uppercase whitespace-nowrap md:text-[11px] lg:text-xs">
+                    Himalayan Treks
+                  </span>
+                </div>
+              </Link>
 
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={isOpen}
-              aria-controls="site-navigation"
-              className="lg:hidden p-2 text-white bg-white/10 rounded-xl active:scale-95 transition-all ml-4"
-            >
-              {isOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
+              <button
+                onClick={() => setIsOpen((prev) => !prev)}
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-navigation"
+                className="ml-4 rounded-xl border border-white/20 bg-white/10 p-2.5 text-white transition-all active:scale-95 lg:hidden"
+              >
+                {isOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+            </div>
 
-          <div
-            id="site-navigation"
-            ref={navRef}
-            onMouseLeave={handleMouseLeave}
-            className={`${
-              isOpen
-                ? "absolute top-full left-0 w-full flex flex-col bg-[#050505] p-6 border-t border-white/5"
-                : "hidden lg:flex lg:flex-row lg:items-center lg:justify-center relative"
-            } z-40 transition-all duration-300`}
-          >
             <div
-              className="absolute hidden lg:block bg-white/10 rounded-lg transition-all duration-300 -z-10"
-              style={{
-                left: `${indicatorStyle.left}px`,
-                width: `${indicatorStyle.width}px`,
-                height: "100%",
-                opacity: indicatorStyle.opacity,
-              }}
-            />
-            {navItems.map((item) => {
-              const isActive = pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  onMouseEnter={(e) => handleMouseEnter(e.currentTarget)}
-                  className={`${commonLinkClasses} ${
-                    isOpen ? "w-full justify-start py-4" : "w-auto"
-                  } ${
-                    isActive
-                      ? "text-secondary font-bold"
-                      : "text-white/90 hover:text-white"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+              id="site-navigation"
+              ref={navRef}
+              onMouseLeave={handleMouseLeave}
+              className="relative z-40 hidden lg:flex lg:flex-row lg:items-center lg:justify-center"
+            >
+              <div
+                className="absolute hidden -z-10 rounded-lg bg-white/10 transition-all duration-300 lg:block"
+                style={{
+                  left: `${indicatorStyle.left}px`,
+                  width: `${indicatorStyle.width}px`,
+                  height: "100%",
+                  opacity: indicatorStyle.opacity,
+                }}
+              />
+              {navItems.map((item) => {
+                const isActive = pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    onMouseEnter={(e) => handleMouseEnter(e.currentTarget)}
+                    className={`${commonLinkClasses} w-auto ${
+                      isActive ? "font-bold text-secondary" : "text-white/90 hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
 
-            {isOpen && (
+            <div className="z-40 hidden items-center justify-end lg:flex lg:flex-none">
               <Link
                 href="/booking"
-                className="mt-4 w-full py-4 bg-primary text-white text-center rounded-xl font-bold uppercase text-[10px] tracking-widest active:scale-95 transition-transform"
+                className="rounded-full bg-primary px-5 py-2.5 text-[10px] font-black tracking-widest text-white uppercase shadow-lg shadow-primary/20 transition-all active:scale-95 hover:bg-primary/90"
               >
                 {t("Book Now")}
               </Link>
-            )}
+            </div>
           </div>
+        </div>
+      </nav>
 
-          <div className="hidden lg:flex items-center justify-end z-40 lg:flex-none">
+      <div
+        id="mobile-navigation"
+        className={`fixed inset-0 z-[2100] transition-opacity duration-300 lg:hidden ${
+          isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => setIsOpen(false)}
+          aria-label="Close mobile menu"
+          className="absolute inset-0 bg-black/65"
+        />
+
+        <aside
+          className={`absolute right-0 top-0 h-full w-[88vw] max-w-[360px] border-l border-white/10 bg-[#070709] shadow-[0_20px_50px_rgba(0,0,0,0.55)] transition-transform duration-300 ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex h-full flex-col px-4 pb-6 pt-24">
+            <div className="mb-4 px-2">
+              <p className="text-[10px] font-semibold tracking-[0.22em] text-zinc-400 uppercase">
+                Navigation
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              {navItems.map((item) => {
+                const isActive = pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`inline-flex w-full items-center rounded-xl px-4 py-3.5 text-sm font-semibold transition-colors ${
+                      isActive
+                        ? "bg-white/[0.12] text-secondary"
+                        : "text-zinc-100 hover:bg-white/[0.08] hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="my-4 h-px bg-white/10" />
+
             <Link
               href="/booking"
-              className="px-5 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-primary/20 active:scale-95"
+              onClick={() => setIsOpen(false)}
+              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-[11px] font-black tracking-[0.18em] text-white uppercase transition-colors hover:bg-primary/90"
             >
               {t("Book Now")}
             </Link>
           </div>
-        </div>
+        </aside>
       </div>
-    </nav>
+    </>
   );
 }

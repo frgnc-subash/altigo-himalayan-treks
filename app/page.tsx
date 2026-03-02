@@ -103,7 +103,7 @@ function WhyChooseUs() {
     <section className="w-full">
       <SectionHeader
         eyebrow="Why Choose Us"
-        title="Trek Planning You Can Trust"
+        title="Trusted Trek Planning"
         description="Safety-first planning, local expertise, and smooth support from arrival to return."
         shadowText="Safety"
       />
@@ -200,7 +200,7 @@ function CustomerSay() {
     <section className="w-full">
       <SectionHeader
         eyebrow="Testimonials"
-        title="Trusted by Trekkers Worldwide"
+        title="Loved by Trekkers"
         description="Real feedback from trekkers who explored Nepal with Altigo."
         shadowText="Reviews"
       />
@@ -211,19 +211,24 @@ function CustomerSay() {
             {row1.map((item, idx) => (
               <article
                 key={`row1-${item.name}-${idx}`}
-                className="w-[320px] shrink-0 rounded-2xl bg-white/5 p-5 backdrop-blur-sm"
+                className="w-[170px] shrink-0 rounded-2xl bg-white/5 p-4 backdrop-blur-sm sm:w-[190px] md:w-[220px] lg:w-[250px] xl:w-[268px]"
               >
                 <div className="mb-3 flex items-center gap-1 text-yellow-400">
                   {Array.from({ length: item.rating }).map((_, starIdx) => (
-                    <Star key={starIdx} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <Star
+                      key={starIdx}
+                      className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400 sm:h-4 sm:w-4"
+                    />
                   ))}
                 </div>
-                <p className="text-sm leading-relaxed text-zinc-300">&quot;{item.text}&quot;</p>
+                <p className="text-xs leading-relaxed text-zinc-300 sm:text-sm">
+                  &quot;{item.text}&quot;
+                </p>
                 <div className="mt-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/85 text-xs font-semibold text-white">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/85 text-[11px] font-semibold text-white sm:h-9 sm:w-9 sm:text-xs">
                     {item.initials}
                   </div>
-                  <p className="text-sm font-semibold text-white">{item.name}</p>
+                  <p className="text-xs font-semibold text-white sm:text-sm">{item.name}</p>
                 </div>
               </article>
             ))}
@@ -235,25 +240,29 @@ function CustomerSay() {
             {row2.map((item, idx) => (
               <article
                 key={`row2-${item.name}-${idx}`}
-                className="w-[320px] shrink-0 rounded-2xl bg-white/5 p-5 backdrop-blur-sm"
+                className="w-[170px] shrink-0 rounded-2xl bg-white/5 p-4 backdrop-blur-sm sm:w-[190px] md:w-[220px] lg:w-[250px] xl:w-[268px]"
               >
                 <div className="mb-3 flex items-center gap-1 text-yellow-400">
                   {Array.from({ length: item.rating }).map((_, starIdx) => (
-                    <Star key={starIdx} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <Star
+                      key={starIdx}
+                      className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400 sm:h-4 sm:w-4"
+                    />
                   ))}
                 </div>
-                <p className="text-sm leading-relaxed text-zinc-300">&quot;{item.text}&quot;</p>
+                <p className="text-xs leading-relaxed text-zinc-300 sm:text-sm">
+                  &quot;{item.text}&quot;
+                </p>
                 <div className="mt-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/85 text-xs font-semibold text-white">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/85 text-[11px] font-semibold text-white sm:h-9 sm:w-9 sm:text-xs">
                     {item.initials}
                   </div>
-                  <p className="text-sm font-semibold text-white">{item.name}</p>
+                  <p className="text-xs font-semibold text-white sm:text-sm">{item.name}</p>
                 </div>
               </article>
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
@@ -274,7 +283,7 @@ function FeaturedDestinations() {
     <section className="w-full">
       <SectionHeader
         eyebrow="Featured Packages"
-        title="Top Trek Packages"
+        title="Top Packages"
         description="Handpicked packages with complete itineraries, transparent pricing, and guided support."
         shadowText="Packages"
       />

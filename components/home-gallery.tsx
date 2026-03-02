@@ -50,21 +50,21 @@ export default function HomeGallery() {
           Gallery
         </span>
         <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">Gallery</p>
-        <h2 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
-          Stories from Himalayan Trails
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+          Trail Stories
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-300 sm:text-base">
+        <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-zinc-300 sm:text-base">
           A quick glimpse of mountain views, trail life, and expedition moments.
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3">
         {visibleItems.map((src, idx) => (
           <button
             key={src}
             type="button"
             onClick={() => setActiveIndex(items.indexOf(src))}
-            className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/10 text-left"
+            className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 text-left sm:aspect-[4/5] sm:rounded-2xl"
             aria-label={`Open trek gallery image ${idx + 1}`}
           >
             <img
@@ -73,8 +73,8 @@ export default function HomeGallery() {
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-3 left-3 flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-1 text-[11px] text-zinc-200">
-              <Camera className="h-3.5 w-3.5" />
+            <div className="absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 text-[10px] text-zinc-200 sm:bottom-3 sm:left-3 sm:gap-2 sm:px-3 sm:text-[11px]">
+              <Camera className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               Himalayan Trail
             </div>
           </button>

@@ -151,7 +151,7 @@ export default function DestinationsPage() {
   return (
     <main className="bg-background text-foreground">
       <section className="mx-auto w-full max-w-7xl px-5 pb-16 pt-0 sm:px-8">
-        <div className="relative left-1/2 w-[110vw] -translate-x-1/2">
+        <div className="relative left-1/2 w-screen -translate-x-1/2 sm:w-[110vw]">
           <DestinationMap
             locations={hasActiveFilters ? filteredDestinations : destinations}
             className="h-[68vh] min-h-[440px] w-full rounded-none border-0 shadow-none"
@@ -159,36 +159,38 @@ export default function DestinationsPage() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-background via-background/70 to-transparent blur-md" />
         </div>
 
-        <div className="relative z-[120] mt-7 rounded-2xl bg-card/45 p-5 shadow-[0_12px_28px_rgba(0,0,0,0.28)] backdrop-blur-sm">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="relative z-[120] mt-7 rounded-2xl bg-card/45 p-4 shadow-[0_12px_28px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-5">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground">
               <SlidersHorizontal size={16} className="text-primary" />
               Refine Destinations
             </div>
-            <div className="inline-flex items-center gap-3">
+            <div className="w-full sm:w-auto">
               <p className="text-xs text-muted-foreground">
                 Showing {filteredDestinations.length} of {destinations.length}
               </p>
-              <button
-                type="button"
-                onClick={() => setFavoritesOnly((prev) => !prev)}
-                className={`inline-flex h-8 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium transition ${
-                  favoritesOnly
-                    ? "bg-white/[0.12] text-white"
-                    : "text-muted-foreground ring-1 ring-white/12 hover:text-foreground"
-                }`}
-              >
-                <Heart className={`h-3.5 w-3.5 ${favoritesOnly ? "fill-white" : ""}`} />
-                Favorites {favorites.length ? `(${favorites.length})` : ""}
-              </button>
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground"
-              >
-                <RotateCcw size={12} />
-                Clear
-              </button>
+              <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:gap-3">
+                <button
+                  type="button"
+                  onClick={() => setFavoritesOnly((prev) => !prev)}
+                  className={`inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium transition sm:h-8 sm:w-auto ${
+                    favoritesOnly
+                      ? "bg-white/[0.12] text-white"
+                      : "text-muted-foreground ring-1 ring-white/12 hover:text-foreground"
+                  }`}
+                >
+                  <Heart className={`h-3.5 w-3.5 ${favoritesOnly ? "fill-white" : ""}`} />
+                  Favorites {favorites.length ? `(${favorites.length})` : ""}
+                </button>
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground sm:h-8 sm:w-auto"
+                >
+                  <RotateCcw size={12} />
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
 
@@ -262,17 +264,27 @@ export default function DestinationsPage() {
               className="overflow-hidden rounded-2xl bg-card/35 shadow-[0_14px_34px_rgba(0,0,0,0.25)]"
             >
               <div className="grid md:grid-cols-[1.2fr_1fr]">
-                <div className="flex h-full flex-col p-4 sm:p-5">
-                  <div className="mb-2 flex items-center gap-2">
-                    <h2 className="text-xl font-semibold">{item.name}</h2>
-                    <span className="inline-flex max-w-full items-center rounded-md bg-primary/12 px-2 py-1 text-[10px] leading-tight font-medium text-primary sm:whitespace-nowrap">
-                      {item.difficulty}
-                    </span>
+                <div className="relative h-44 md:col-start-2 md:h-[250px]">
+                  <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <p className="absolute bottom-3 left-3 text-sm font-semibold text-white">
+                    {item.name}
+                  </p>
+                </div>
+
+                <div className="flex h-full flex-col p-4 sm:p-5 md:col-start-1">
+                  <div className="mb-2 flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h2 className="text-xl font-semibold leading-tight">{item.name}</h2>
+                      <span className="mt-1 inline-flex max-w-full items-center rounded-md bg-primary/12 px-2 py-1 text-[10px] leading-tight font-medium text-primary sm:whitespace-nowrap">
+                        {item.difficulty}
+                      </span>
+                    </div>
                     <button
                       type="button"
                       onClick={() => toggleFavorite(item.id)}
                       aria-label={favorites.includes(item.id) ? "Remove favorite" : "Add favorite"}
-                      className={`ml-auto inline-flex h-8 w-8 items-center justify-center rounded-full transition ${
+                      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition ${
                         favorites.includes(item.id)
                           ? "bg-white/[0.12] text-white"
                           : "bg-white/[0.05] text-zinc-400 hover:bg-white/[0.1] hover:text-zinc-200"
@@ -311,14 +323,6 @@ export default function DestinationsPage() {
                       <ArrowRight size={13} />
                     </Link>
                   </div>
-                </div>
-
-                <div className="relative h-44 md:h-[250px]">
-                  <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  <p className="absolute bottom-3 left-3 text-sm font-semibold text-white">
-                    {item.name}
-                  </p>
                 </div>
               </div>
             </article>

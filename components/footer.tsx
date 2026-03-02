@@ -110,15 +110,15 @@ export default function Footer() {
             <div className="space-y-6">
               <a
                 href="mailto:info@altigohimalayantreks.com"
-                className="flex items-center gap-3 text-sm font-medium text-zinc-400 hover:text-white transition-colors group"
+                className="flex items-start gap-3 text-sm font-medium text-zinc-400 transition-colors group hover:text-white"
               >
-                <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 transition-colors group-hover:bg-primary/20">
                   <Mail
                     size={14}
                     className="group-hover:text-primary transition-colors"
                   />
                 </div>
-                info@altigohimalayantreks.com
+                <span className="break-all">info@altigohimalayantreks.com</span>
               </a>
 
               <a

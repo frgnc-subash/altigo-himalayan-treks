@@ -106,24 +106,26 @@ export default function PackagesPage() {
           </p>
         </div>
 
-        <div className="mt-7 rounded-2xl bg-card/45 p-4 shadow-[0_12px_28px_rgba(0,0,0,0.22)]">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-7 rounded-2xl bg-card/45 p-4 shadow-[0_12px_28px_rgba(0,0,0,0.22)] sm:p-5">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground">
               <SlidersHorizontal size={16} className="text-primary" />
               Refine Packages
             </div>
-            <div className="inline-flex items-center gap-3">
+            <div className="w-full sm:w-auto">
               <p className="text-xs text-muted-foreground">
                 Showing {filteredPackages.length} of {trekPackages.length}
               </p>
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground"
-              >
-                <RotateCcw size={12} />
-                Clear
-              </button>
+              <div className="mt-2 sm:mt-0 sm:flex sm:justify-end">
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground sm:h-8 sm:w-auto"
+                >
+                  <RotateCcw size={12} />
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
 
