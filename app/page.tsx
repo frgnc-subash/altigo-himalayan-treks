@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import BackgroundAni from "@/components/backgroundAni";
 import HomeGallery from "@/components/home-gallery";
+import TopPackagesCarousel from "@/components/top-packages-carousel";
 import { Button } from "@/components/ui/button";
 import { trekPackages } from "@/lib/packages-data";
 import { absoluteUrl, SITE_NAME } from "@/lib/seo";
@@ -59,7 +60,7 @@ function SectionHeader({
     <div className="relative isolate mb-8 text-center md:mb-10">
       <span
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 w-full -translate-x-1/2 -translate-y-1/2 text-center text-4xl font-black tracking-[0.16em] text-white/5 uppercase sm:text-7xl md:text-8xl lg:text-9xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 w-full -translate-x-1/2 -translate-y-1/2 text-center text-4xl font-black tracking-[0.16em] text-white/10 uppercase drop-shadow-[0_8px_18px_rgba(0,0,0,0.25)] sm:text-7xl md:text-8xl lg:text-9xl"
       >
         {shadowText}
       </span>
@@ -142,18 +143,6 @@ function WhyChooseUs() {
               <p className="mt-1.5 text-sm leading-relaxed text-zinc-300">{item.desc}</p>
             </article>
           ))}
-
-          <article className="relative overflow-hidden rounded-2xl border border-white/10">
-            <img
-              src="/gallery/image4.jpeg"
-              alt="Support team"
-              className="h-28 w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <p className="absolute left-3 bottom-3 text-xs font-semibold text-white">
-              Support on every trail day
-            </p>
-          </article>
         </div>
       </div>
     </section>
@@ -271,16 +260,6 @@ function CustomerSay() {
 }
 
 function FeaturedDestinations() {
-  const featuredOrder = ["upper-mustang", "everest-base-camp", "annapurna-circuit"];
-  const featured = featuredOrder
-    .map((id) => trekPackages.find((pkg) => pkg.id === id))
-    .filter((pkg): pkg is NonNullable<typeof pkg> => Boolean(pkg));
-  const images: Record<string, string> = {
-    "annapurna-circuit": "/abc/8.jpg",
-    "everest-base-camp": "/ebc/9.jpg",
-    "upper-mustang": "/upper-mustang/lomanthang.jpg",
-  };
-
   return (
     <section className="w-full">
       <SectionHeader
@@ -289,38 +268,7 @@ function FeaturedDestinations() {
         description="Handpicked packages with complete itineraries, transparent pricing, and guided support."
         shadowText="Packages"
       />
-
-      <div className="grid gap-4 md:grid-cols-3">
-        {featured.map((item) => (
-          <article
-            key={item.id}
-            className="group overflow-hidden rounded-2xl bg-white/5"
-          >
-            <div className="relative h-48 overflow-hidden">
-              <img
-                src={images[item.id] || "/backgrounds/bg1.jpeg"}
-                alt={item.name}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-              <p className="absolute left-3 bottom-3 text-sm font-semibold text-white">
-                {item.name}
-              </p>
-            </div>
-
-            <div className="flex min-h-[176px] flex-col p-4 sm:h-[200px]">
-              <p className="text-sm text-zinc-300">{item.duration}</p>
-              <p className="mt-2 text-sm text-zinc-400">{item.summary}</p>
-              <Link
-                href={`/packages/${item.id}`}
-                className="mt-auto inline-flex self-start rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
-              >
-                View Package
-              </Link>
-            </div>
-          </article>
-        ))}
-      </div>
+      <TopPackagesCarousel packages={trekPackages} />
     </section>
   );
 }

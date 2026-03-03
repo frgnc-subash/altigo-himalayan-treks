@@ -27,6 +27,7 @@ export default function Footer() {
   const navLinks = [
     { name: t("Home"), path: "/" },
     { name: t("Destinations"), path: "/destinations" },
+    { name: t("Guide"), path: "/guide" },
     { name: t("Packages"), path: "/packages" },
     { name: t("Contact Us"), path: "/contact" },
   ];
@@ -110,7 +111,7 @@ export default function Footer() {
             <div className="space-y-6">
               <a
                 href="mailto:info@altigohimalayantreks.com"
-                className="flex items-start gap-3 text-sm font-medium text-zinc-400 transition-colors group hover:text-white"
+                className="flex min-w-0 items-center gap-3 text-sm font-medium text-zinc-400 transition-colors group hover:text-white"
               >
                 <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 transition-colors group-hover:bg-primary/20">
                   <Mail
@@ -118,12 +119,14 @@ export default function Footer() {
                     className="group-hover:text-primary transition-colors"
                   />
                 </div>
-                <span className="break-all">info@altigohimalayantreks.com</span>
+                <span className="max-w-[220px] truncate whitespace-nowrap text-zinc-300 transition-colors group-hover:text-white sm:max-w-[280px] md:max-w-none">
+                  info@altigohimalayantreks.com
+                </span>
               </a>
 
               <a
                 href="mailto:partner@altigohimalayantreks.com"
-                className="flex items-start gap-3 text-sm font-medium text-zinc-400 hover:text-white transition-colors group"
+                className="flex min-w-0 items-center gap-3 text-sm font-medium text-zinc-400 transition-colors group hover:text-white"
               >
                 <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
                   <Mail
@@ -131,10 +134,8 @@ export default function Footer() {
                     className="group-hover:text-primary transition-colors"
                   />
                 </div>
-                <span className="leading-tight space-y-1">
-                  <span className="block text-zinc-300 group-hover:text-white transition-colors break-all">
-                    partner@altigohimalayantreks.com
-                  </span>
+                <span className="max-w-[220px] truncate whitespace-nowrap text-zinc-300 transition-colors group-hover:text-white sm:max-w-[280px] md:max-w-none">
+                  partner@altigohimalayantreks.com
                 </span>
               </a>
 

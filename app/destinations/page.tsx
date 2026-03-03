@@ -7,7 +7,7 @@ import {
   MapPin,
   Clock3,
   ArrowRight,
-  Search,
+  BookOpen,
   RotateCcw,
   SlidersHorizontal,
   ChevronDown,
@@ -15,6 +15,7 @@ import {
   Heart,
 } from "lucide-react";
 import DestinationMap from "@/components/destination-map-client";
+import SearchField from "@/components/search-field";
 import { destinations } from "@/lib/destinations-data";
 
 type DropdownOption = {
@@ -166,10 +167,14 @@ export default function DestinationsPage() {
               Refine Destinations
             </div>
             <div className="w-full sm:w-auto">
-              <p className="text-xs text-muted-foreground">
-                Showing {filteredDestinations.length} of {destinations.length}
-              </p>
-              <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-end sm:gap-3">
+                <Link
+                  href="/guide"
+                  className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 transition hover:text-foreground sm:h-8 sm:w-auto"
+                >
+                  <BookOpen className="h-3.5 w-3.5" />
+                  Guide
+                </Link>
                 <button
                   type="button"
                   onClick={() => setFavoritesOnly((prev) => !prev)}
@@ -185,7 +190,7 @@ export default function DestinationsPage() {
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground sm:h-8 sm:w-auto"
+                  className="col-span-2 inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground sm:col-span-1 sm:h-8 sm:w-auto"
                 >
                   <RotateCcw size={12} />
                   Clear
@@ -199,27 +204,12 @@ export default function DestinationsPage() {
               <span className="mb-1.5 block text-xs font-medium text-muted-foreground">
                 Search
               </span>
-              <div className="group relative">
-                <div className="pointer-events-none absolute inset-0 rounded-xl bg-white/[0.05] opacity-0 blur-sm transition-opacity duration-300 group-focus-within:opacity-100" />
-                <Search className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-zinc-500 transition-colors group-focus-within:text-zinc-300" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search Everest, Annapurna, Khumbu..."
-                  className="relative h-12 w-full rounded-xl border-0 bg-[#060607] pl-10 pr-10 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_22px_rgba(0,0,0,0.3)] outline-none transition-all placeholder:text-zinc-500 focus:bg-[#101012] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.18)]"
-                />
-                {query && (
-                  <button
-                    type="button"
-                    onClick={() => setQuery("")}
-                    aria-label="Clear search"
-                    className="absolute right-2 top-1/2 z-10 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-white/[0.08] text-sm text-zinc-300 transition hover:bg-white/[0.14] hover:text-white"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
+              <SearchField
+                value={query}
+                onChange={setQuery}
+                placeholder="Search destination or region (e.g., Everest, Annapurna, Manang)"
+                ariaLabel="Search destinations"
+              />
             </label>
 
             <label className="block">

@@ -54,6 +54,63 @@ const itineraryImageByPackage: Record<string, string[]> = {
     "/abc/9.jpg",
     "/abc/10.jpg",
   ],
+  "annapurna-semi-circuit": [
+    "/abc/1.jpg",
+    "/abc/3.jpg",
+    "/abc/4.jpg",
+    "/abc/5.jpg",
+    "/abc/6.jpg",
+    "/abc/7.jpg",
+    "/abc/8.jpg",
+    "/abc/9.jpg",
+  ],
+  "everest-gokyo-cho-la": [
+    "/ebc/1.jpg",
+    "/ebc/2.jpg",
+    "/ebc/3.jpg",
+    "/ebc/4.jpg",
+    "/ebc/5.jpg",
+    "/ebc/6.jpg",
+    "/ebc/7.jpg",
+    "/ebc/8.jpg",
+    "/ebc/9.jpg",
+  ],
+  "lower-dolpo-trek": [
+    "/backgrounds/bg2.jpeg",
+    "/backgrounds/bg3.jpeg",
+    "/backgrounds/bg5.jpeg",
+    "/backgrounds/bg7.jpeg",
+    "/backgrounds/bg8.jpeg",
+    "/backgrounds/bg9.jpeg",
+    "/gallery/image3.jpeg",
+    "/gallery/image6.jpeg",
+    "/gallery/image9.jpeg",
+    "/gallery/image11.jpeg",
+  ],
+  "nar-phu-valley-jomsom": [
+    "/backgrounds/bg2.jpeg",
+    "/backgrounds/bg3.jpeg",
+    "/backgrounds/bg4.jpeg",
+    "/backgrounds/bg5.jpeg",
+    "/backgrounds/bg6.jpeg",
+    "/backgrounds/bg7.jpeg",
+    "/backgrounds/bg8.jpeg",
+    "/backgrounds/bg9.jpeg",
+    "/gallery/image2.jpeg",
+    "/gallery/image4.jpeg",
+  ],
+  "sacred-valley-ruby-valley": [
+    "/backgrounds/bg2.jpeg",
+    "/backgrounds/bg4.jpeg",
+    "/backgrounds/bg5.jpeg",
+    "/backgrounds/bg7.jpeg",
+    "/backgrounds/bg8.jpeg",
+    "/gallery/image2.jpeg",
+    "/gallery/image3.jpeg",
+    "/gallery/image4.jpeg",
+    "/gallery/image6.jpeg",
+    "/gallery/image9.jpeg",
+  ],
   "everest-base-camp": [
     "/ebc/1.jpg",
     "/ebc/2.jpg",
@@ -81,6 +138,11 @@ const itineraryImageByPackage: Record<string, string[]> = {
 const packageHeroImage: Record<string, string> = {
   "langtang-valley": "/gallery/image8.jpeg",
   "annapurna-circuit": "/abc/8.jpg",
+  "annapurna-semi-circuit": "/abc/6.jpg",
+  "everest-gokyo-cho-la": "/ebc/8.jpg",
+  "lower-dolpo-trek": "/backgrounds/bg9.jpeg",
+  "nar-phu-valley-jomsom": "/backgrounds/bg4.jpeg",
+  "sacred-valley-ruby-valley": "/backgrounds/bg7.jpeg",
   "everest-base-camp": "/ebc/9.jpg",
   "poon-hill": "/gallery/image7.jpeg",
   "upper-mustang": "/upper-mustang/lomanthang.jpg",
@@ -153,6 +215,60 @@ function inferItineraryMeta(text: string) {
   };
 }
 
+function parseItineraryText(text: string) {
+  const withoutDay = text.replace(/^Day\s*\d+\s*:\s*/i, "").trim();
+  const parts = withoutDay.split(" - ");
+  const route = (parts.shift() || withoutDay).trim();
+  const detail = parts.join(" - ").trim();
+
+  return {
+    title: route || "Route segment",
+    desc:
+      detail ||
+      "Guided trekking day with balanced pace, planned hydration breaks, and acclimatization-aware progression.",
+  };
+}
+
+function inferItineraryHighlights(route: string, detail: string) {
+  const source = `${route} ${detail}`;
+  const highlights: string[] = [];
+
+  const durationMatch = source.match(
+    /(\d+\s*-\s*\d+\s*(?:hour|hours|hrs)|\d+\s*(?:hour|hours|hrs))/i,
+  );
+  if (durationMatch) {
+    highlights.push(`Estimated duration: ${durationMatch[1].replace(/\s+/g, " ").trim()}`);
+  }
+
+  const altitudeMatches = [...source.matchAll(/(\d{1,2}(?:,\d{3})?)m\b/g)].map((match) =>
+    Number(match[1].replace(/,/g, "")),
+  );
+  if (altitudeMatches.length) {
+    const maxAltitude = Math.max(...altitudeMatches);
+    highlights.push(`Highest point of the day: ${maxAltitude.toLocaleString()}m`);
+  }
+
+  if (/fly|flight/i.test(source)) {
+    highlights.push("Weather windows can affect departures; keep key documents and essentials accessible.");
+  } else if (/drive|jeep|bus|transfer/i.test(source)) {
+    highlights.push("Road conditions vary by season; keep water and warm layers in your daypack.");
+  } else if (/pass|base camp|summit/i.test(source)) {
+    highlights.push("Start early for safer crossing conditions and maintain a conservative high-altitude pace.");
+  } else if (/acclimatization|rest/i.test(source)) {
+    highlights.push("Use this day for active recovery, hydration, and controlled altitude adaptation.");
+  } else {
+    highlights.push("A steady guided pace with regular hydration and acclimatization checks.");
+  }
+
+  if (/monastery/i.test(source) && highlights.length < 3) {
+    highlights.push("Opportunity for a cultural stop at monastery sites along the route.");
+  } else if (/lake/i.test(source) && highlights.length < 3) {
+    highlights.push("Expect scenic lake viewpoints during this segment.");
+  }
+
+  return highlights.slice(0, 3);
+}
+
 export default function PackageDetails({ item }: PackageDetailsProps) {
   const [activeTab, setActiveTab] = useState<(typeof SECTION_IDS)[number]>("overview");
 
@@ -177,17 +293,18 @@ export default function PackageDetails({ item }: PackageDetailsProps) {
 
   const itineraryDays = useMemo(
     () =>
-      item.itinerary.map((text, i) => ({
-        title: text.split(":")[0] || `Day ${i + 1}`,
-        desc:
-          text.split(":").slice(1).join(":").trim() ||
-          "A balanced trekking day with scenic trails, local culture, and guided support.",
-        meta: inferItineraryMeta(text),
-        image:
-          item.id !== "poon-hill" && itineraryImageByPackage[item.id]
-            ? itineraryImageByPackage[item.id][i % itineraryImageByPackage[item.id].length]
-            : imagePool[i % imagePool.length],
-      })),
+      item.itinerary.map((text, i) => {
+        const parsed = parseItineraryText(text);
+        return {
+          ...parsed,
+          highlights: inferItineraryHighlights(parsed.title, parsed.desc),
+          meta: inferItineraryMeta(text),
+          image:
+            item.id !== "poon-hill" && itineraryImageByPackage[item.id]
+              ? itineraryImageByPackage[item.id][i % itineraryImageByPackage[item.id].length]
+              : imagePool[i % imagePool.length],
+        };
+      }),
     [item],
   );
 
@@ -475,6 +592,7 @@ function ItineraryItem({
     title: string;
     desc: string;
     image: string;
+    highlights: string[];
     meta: { hours: string; terrain: string; focus: string; detail: string };
   };
   day: number;
@@ -500,6 +618,17 @@ function ItineraryItem({
             <img src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-[2s] hover:scale-105" />
           </div>
           <p className="mb-5 text-sm leading-relaxed font-light text-zinc-400 md:text-base">{item.desc}</p>
+          <div className="mb-5 rounded-2xl border border-white/5 bg-black/20 p-4">
+            <p className="mb-2 text-[10px] font-bold tracking-widest text-zinc-400 uppercase">Key Details</p>
+            <ul className="space-y-2">
+              {item.highlights.map((highlight) => (
+                <li key={highlight} className="flex items-start gap-2 text-xs text-zinc-300 md:text-sm">
+                  <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+                  {highlight}
+                </li>
+              ))}
+            </ul>
+          </div>
           <p className="mb-5 text-sm leading-relaxed text-zinc-500">{item.meta.detail}</p>
           <div className="flex flex-wrap gap-3 border-t border-white/5 pt-4">
             <span className="flex items-center gap-2 rounded-lg border border-white/5 bg-black/20 px-3 py-2 text-[10px] font-bold tracking-wider text-zinc-400 uppercase">

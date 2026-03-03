@@ -12,11 +12,17 @@ import {
   ShieldCheck,
   SlidersHorizontal,
 } from "lucide-react";
+import SearchField from "@/components/search-field";
 import { trekPackages } from "@/lib/packages-data";
 
 const packageImage: Record<string, string> = {
   "langtang-valley": "/gallery/image8.jpeg",
   "annapurna-circuit": "/abc/8.jpg",
+  "annapurna-semi-circuit": "/abc/6.jpg",
+  "everest-gokyo-cho-la": "/ebc/8.jpg",
+  "lower-dolpo-trek": "/backgrounds/bg9.jpeg",
+  "nar-phu-valley-jomsom": "/backgrounds/bg4.jpeg",
+  "sacred-valley-ruby-valley": "/backgrounds/bg7.jpeg",
   "everest-base-camp": "/ebc/5.jpg",
   "poon-hill": "/gallery/image7.jpeg",
   "upper-mustang": "/upper-mustang/lomanthang.jpg",
@@ -37,6 +43,7 @@ const durationDays = (duration: string) => {
   const match = duration.match(/\d+/);
   return match ? Number(match[0]) : 0;
 };
+const ICON_STROKE = 2.4;
 
 export default function PackagesPage() {
   const [query, setQuery] = useState("");
@@ -109,20 +116,17 @@ export default function PackagesPage() {
         <div className="mt-7 rounded-2xl bg-card/45 p-4 shadow-[0_12px_28px_rgba(0,0,0,0.22)] sm:p-5">
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground">
-              <SlidersHorizontal size={16} className="text-primary" />
+              <SlidersHorizontal size={16} strokeWidth={ICON_STROKE} className="text-primary" />
               Refine Packages
             </div>
             <div className="w-full sm:w-auto">
-              <p className="text-xs text-muted-foreground">
-                Showing {filteredPackages.length} of {trekPackages.length}
-              </p>
-              <div className="mt-2 sm:mt-0 sm:flex sm:justify-end">
+              <div className="sm:flex sm:justify-end">
                 <button
                   type="button"
                   onClick={clearFilters}
                   className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md px-3 text-xs font-medium text-muted-foreground ring-1 ring-white/12 hover:text-foreground sm:h-8 sm:w-auto"
                 >
-                  <RotateCcw size={12} />
+                  <RotateCcw size={12} strokeWidth={ICON_STROKE} />
                   Clear
                 </button>
               </div>
@@ -132,12 +136,11 @@ export default function PackagesPage() {
           <div className="grid gap-3 lg:grid-cols-[1.8fr_1fr]">
             <label className="block">
               <span className="mb-1.5 block text-xs font-medium text-muted-foreground">Search</span>
-              <input
-                type="text"
+              <SearchField
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search packages"
-                className="h-11 w-full rounded-lg border-0 bg-white/[0.04] px-3 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:bg-white/[0.06] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.2)]"
+                onChange={setQuery}
+                placeholder="Search by package name, route style, or ideal trekker..."
+                ariaLabel="Search packages"
               />
             </label>
 
@@ -152,10 +155,14 @@ export default function PackagesPage() {
                   className="inline-flex h-11 w-full items-center justify-between rounded-lg bg-[#060607] px-3 text-sm font-medium text-zinc-100 transition hover:bg-[#101012] focus-visible:outline-none focus-visible:shadow-[0_0_0_1px_rgba(255,255,255,0.2)]"
                 >
                   <span className="inline-flex items-center gap-2">
-                    <SlidersHorizontal className="h-3.5 w-3.5 text-zinc-400" />
+                    <SlidersHorizontal
+                      strokeWidth={ICON_STROKE}
+                      className="h-3.5 w-3.5 text-zinc-400"
+                    />
                     {selectedSortLabel}
                   </span>
                   <ChevronDown
+                    strokeWidth={ICON_STROKE}
                     className={`h-4 w-4 text-zinc-500 transition ${sortOpen ? "rotate-180" : ""}`}
                   />
                 </button>
@@ -177,7 +184,7 @@ export default function PackagesPage() {
                           }`}
                         >
                           {option.label}
-                          {active && <Check className="h-4 w-4" />}
+                          {active && <Check strokeWidth={ICON_STROKE} className="h-4 w-4" />}
                         </button>
                       );
                     })}
@@ -192,9 +199,9 @@ export default function PackagesPage() {
           {filteredPackages.map((item) => (
             <article
               key={item.id}
-              className="group h-full overflow-hidden rounded-2xl border-0 bg-card/45 shadow-[0_12px_28px_rgba(0,0,0,0.22)] transition-all hover:-translate-y-1"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border-0 bg-card/45 shadow-[0_12px_28px_rgba(0,0,0,0.22)] transition-all hover:-translate-y-1"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-48 shrink-0 overflow-hidden">
                 <img
                   src={packageImage[item.id] || "/backgrounds/bg8.jpeg"}
                   alt={item.name}
@@ -203,33 +210,34 @@ export default function PackagesPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
               </div>
 
-              <div className="flex h-full flex-col p-4">
-                  <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <h2 className="text-xl font-semibold">{item.name}</h2>
-                    <span className="inline-flex max-w-full items-center rounded-md bg-primary/15 px-2 py-1 text-[10px] leading-tight font-semibold text-primary sm:whitespace-nowrap">
-                      {item.difficulty}
-                    </span>
-                  </div>
-                  <p className="min-h-[44px] text-sm leading-relaxed text-zinc-200">
-                    {shortText(item.summary)}
+              <div className="flex flex-1 flex-col p-4">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <h2 className="text-xl font-semibold">{item.name}</h2>
+                  <span className="inline-flex max-w-full items-center rounded-md bg-primary/15 px-2 py-1 text-[10px] leading-tight font-semibold text-primary sm:whitespace-nowrap">
+                    {item.difficulty}
+                  </span>
+                </div>
+                <p className="min-h-[44px] text-sm leading-relaxed text-zinc-200">
+                  {shortText(item.summary)}
+                </p>
+
+                <div className="mt-3 grid gap-2 text-sm text-zinc-200 sm:grid-cols-2">
+                  <p className="flex items-center gap-2">
+                    <Clock3 strokeWidth={ICON_STROKE} className="h-4 w-4 text-primary" />
+                    {item.duration}
                   </p>
+                  <p className="flex items-center gap-2">
+                    <Mountain strokeWidth={ICON_STROKE} className="h-4 w-4 text-primary" />
+                    {item.altitude}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <ShieldCheck strokeWidth={ICON_STROKE} className="h-4 w-4 text-primary" />
+                    Ideal for: {item.idealFor}
+                  </p>
+                </div>
 
-                  <div className="mt-3 grid gap-2 text-sm text-zinc-200 sm:grid-cols-2">
-                    <p className="flex items-center gap-2">
-                      <Clock3 className="h-4 w-4 text-primary" />
-                      {item.duration}
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <Mountain className="h-4 w-4 text-primary" />
-                      {item.altitude}
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4 text-primary" />
-                      Ideal for: {item.idealFor}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 rounded-lg border-0 bg-black/25 p-3 ring-0">
+                <div className="mt-auto pt-4">
+                  <div className="rounded-lg border-0 bg-black/25 p-3 ring-0">
                     <div className="mb-3 flex items-center justify-between">
                       <p className="text-xs tracking-wide text-zinc-300 uppercase">Starting Price</p>
                       <p className="text-sm font-semibold text-white">
@@ -242,7 +250,7 @@ export default function PackagesPage() {
                         className="inline-flex h-10 items-center justify-center gap-1 rounded-lg border border-white/8 bg-black/25 px-3 text-sm font-medium text-white hover:border-white/15 hover:bg-white/10"
                       >
                         View
-                        <ArrowRight size={13} />
+                        <ArrowRight size={13} strokeWidth={ICON_STROKE} />
                       </Link>
                       <Link
                         href={`/booking?package=${item.id}`}
@@ -252,6 +260,7 @@ export default function PackagesPage() {
                       </Link>
                     </div>
                   </div>
+                </div>
               </div>
             </article>
           ))}

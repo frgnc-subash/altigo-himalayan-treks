@@ -166,41 +166,30 @@
 
 .destination-marker {
   position: relative;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.destination-marker-pulse {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 9999px;
-  background: rgba(59, 130, 246, 0.35);
-  animation: destination-pulse 1.6s ease-out infinite;
-}
-
 .destination-marker-core {
   position: relative;
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 9999px;
-  background: #3b82f6;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 1);
+  background: #60a5fa;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.25);
+  transition: transform 0.16s ease;
 }
 
-.destination-marker.selected .destination-marker-pulse {
-  width: 30px;
-  height: 30px;
+.destination-marker:hover .destination-marker-core {
+  transform: scale(1.1);
 }
 
 .destination-marker.selected .destination-marker-core {
-  width: 14px;
-  height: 14px;
-  border-width: 2px;
+  transform: scale(1.08);
 }
 
 /* Keep Leaflet map layers below fixed navbar */
@@ -212,19 +201,20 @@
   z-index: 20 !important;
 }
 
-@keyframes destination-pulse {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.95;
-  }
-  70% {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.8);
-    opacity: 0;
-  }
+.leaflet-tooltip.destination-tooltip {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(9, 12, 20, 0.9);
+  color: #e4e4e7;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 5px 8px;
+  box-shadow: 0 4px 10px rgba(2, 6, 23, 0.22);
+}
+
+.leaflet-tooltip-top.destination-tooltip:before {
+  border-top-color: rgba(9, 12, 20, 0.9);
 }
 
 /* Homepage testimonials marquee */

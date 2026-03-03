@@ -80,6 +80,11 @@ export default function Navbar() {
     { label: t("Contact Us"), path: "/contact" },
   ];
 
+  const isItemActive = (item: (typeof navItems)[number]) =>
+    item.path === "/"
+      ? pathname === "/"
+      : pathname === item.path || pathname.startsWith(`${item.path}/`);
+
   const commonLinkClasses =
     "relative px-4 lg:px-5 py-2 text-sm font-medium transition-all duration-300 rounded-lg flex items-center justify-center gap-2";
 
@@ -145,7 +150,7 @@ export default function Navbar() {
                 }}
               />
               {navItems.map((item) => {
-                const isActive = pathname === item.path;
+                const isActive = isItemActive(item);
                 return (
                   <Link
                     key={item.path}
@@ -161,7 +166,13 @@ export default function Navbar() {
               })}
             </div>
 
-            <div className="z-40 hidden items-center justify-end lg:flex lg:flex-none">
+            <div className="z-40 hidden items-center justify-end gap-2 lg:flex lg:flex-none">
+              <Link
+                href="/guide"
+                className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-[10px] font-black tracking-widest text-white uppercase transition-all active:scale-95 hover:bg-white/10"
+              >
+                {t("Guide")}
+              </Link>
               <Link
                 href="/booking"
                 className="rounded-full bg-primary px-5 py-2.5 text-[10px] font-black tracking-widest text-white uppercase shadow-lg shadow-primary/20 transition-all active:scale-95 hover:bg-primary/90"
@@ -200,7 +211,7 @@ export default function Navbar() {
 
             <div className="flex flex-col gap-1">
               {navItems.map((item) => {
-                const isActive = pathname === item.path;
+                const isActive = isItemActive(item);
                 return (
                   <Link
                     key={item.path}
@@ -220,13 +231,22 @@ export default function Navbar() {
 
             <div className="my-4 h-px bg-white/10" />
 
-            <Link
-              href="/booking"
-              onClick={() => setIsOpen(false)}
-              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-[11px] font-black tracking-[0.18em] text-white uppercase transition-colors hover:bg-primary/90"
-            >
-              {t("Book Now")}
-            </Link>
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/guide"
+                onClick={() => setIsOpen(false)}
+                className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-white/[0.03] text-[11px] font-black tracking-[0.12em] text-white uppercase transition-colors hover:bg-white/[0.08]"
+              >
+                {t("Guide")}
+              </Link>
+              <Link
+                href="/booking"
+                onClick={() => setIsOpen(false)}
+                className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-[11px] font-black tracking-[0.18em] text-white uppercase transition-colors hover:bg-primary/90"
+              >
+                {t("Book Now")}
+              </Link>
+            </div>
           </div>
         </aside>
       </div>
